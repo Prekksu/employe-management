@@ -1,5 +1,5 @@
 {
-	"name": "lerna-template",
+	"name": "idsolutions",
 	"scripts": {
 		"start": "lerna run start --stream",
 		"build": "lerna run build --stream",

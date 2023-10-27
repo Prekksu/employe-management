@@ -1,7 +1,7 @@
 module.exports = {
 	apps: [
 		{
-			name: "LERNA-TEMPLATE", // PROJECT-NAME
+			name: "IDSOLUTIONS", // PROJECT-NAME
 			script: "./projects/server/src/index.js",
 			env: {
 				NODE_ENV: "production",
