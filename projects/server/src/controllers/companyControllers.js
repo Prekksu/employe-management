@@ -1,4 +1,5 @@
 const db = require("../models");
+const { Op } = require("sequelize");
 
 const companyController = {
 	getAll: async (req, res) => {
@@ -12,8 +13,16 @@ const companyController = {
 		}
 	},
 	createCompany: async (req, res) => {
+		const { company_name } = req.body;
 		try {
-			const { company_name } = req.body;
+			const existingCompany = await db.companies.findOne({
+				where: { company_name },
+			});
+
+			if (existingCompany) {
+				throw new Error("Company with the same name already exists");
+			}
+
 			await db.companies.create({
 				company_name,
 			});
@@ -29,6 +38,17 @@ const companyController = {
 		const { company_name } = req.body;
 
 		try {
+			const existingCompany = await db.companies.findOne({
+				where: {
+					company_name,
+					id: { [Op.not]: id },
+				},
+			});
+
+			if (existingCompany) {
+				return res.status(400).send({ message: "Company already exists." });
+			}
+
 			await db.companies.update(
 				{
 					company_name,

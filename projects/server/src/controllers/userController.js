@@ -82,6 +82,15 @@ const userController = {
 			return res.status(500).send({ message: err.message });
 		}
 	},
+	assignPosition: async (req, res) => {
+		try {
+			const { position_id, id } = req.body;
+		} catch (error) {
+			return res.status(500).send({
+				message: error.message,
+			});
+		}
+	},
 };
 
 module.exports = userController;

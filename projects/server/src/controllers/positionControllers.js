@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 
 const positionController = {
@@ -12,8 +13,16 @@ const positionController = {
 		}
 	},
 	createPosition: async (req, res) => {
+		const { position } = req.body;
 		try {
-			const { position } = req.body;
+			const existingPosition = await db.positions.findOne({
+				where: { position },
+			});
+
+			if (existingPosition) {
+				throw new Error("Position with the same name already exists");
+			}
+
 			await db.positions.create({
 				position,
 			});
@@ -29,6 +38,16 @@ const positionController = {
 		const { position } = req.body;
 
 		try {
+			const existingPosition = await db.positions.findOne({
+				where: {
+					position,
+					id: { [Op.not]: id },
+				},
+			});
+
+			if (existingPosition) {
+				return res.status(400).send({ message: "Position already exists." });
+			}
 			await db.positions.update(
 				{
 					position,

@@ -4,8 +4,8 @@ const positionController = require("../controllers").positionController;
 const checkRole = require("../middlewares/roleDecoder");
 
 router.get("/", positionController.getAll);
-router.post("/", checkRole.checkUser, positionController.createPosition);
-router.patch("/:id", checkRole.checkUser, positionController.editPosition);
-router.delete("/:id", checkRole.checkUser, positionController.deletePosition);
+router.post("/", checkRole.checkAdmin, positionController.createPosition);
+router.patch("/:id", checkRole.checkAdmin, positionController.editPosition);
+router.delete("/:id", checkRole.checkAdmin, positionController.deletePosition);
 
 module.exports = router;
