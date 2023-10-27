@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-	const company = sequelize.define("companies", {
-		name: Sequelize.STRING,
+	const companies = sequelize.define("companies", {
+		company_name: Sequelize.STRING,
 	});
-	return company;
+	return companies;
 };

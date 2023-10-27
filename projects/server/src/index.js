@@ -14,10 +14,14 @@ app.use(cors());
 
 app.use(express.json());
 
-//#region API ROUTES
-
 // ===========================
-// NOTE : Add your routes here
+
+app.use("/api/auth", router.authRouter);
+app.use("/api/user", router.userRouter);
+app.use("/api/company", router.companyRouter);
+app.use("/api/position", router.positionRouter);
+
+app.use("/api/userImg", express.static(`${__dirname}/public/userImg`));
 
 // ===========================
 

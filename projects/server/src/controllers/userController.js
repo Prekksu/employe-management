@@ -4,10 +4,12 @@ const bcrypt = require("bcrypt");
 const userController = {
 	getAll: async (req, res) => {
 		try {
-			const user = await db.users.findAll();
+			const user = await db.users.findAll({
+				attributes: ["uuid", "fullname", "email", "phone_number", "role"],
+			});
 			return res.send(user);
 		} catch (err) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.message,
 			});
 		}
@@ -25,30 +27,31 @@ const userController = {
 				role,
 			});
 
-			res.status(201).json({ msg: "User has been created" });
+			return res.status(201).json({ message: "User has been created" });
 		} catch (err) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.message,
 			});
 		}
 	},
 	editUser: async (req, res) => {
 		try {
-			const { fullname, phone_number } = req.body;
+			const { fullname, password } = req.body;
+
 			await db.users.update(
 				{
 					fullname,
-					phone_number,
+					password,
 				},
 				{
 					where: {
-						uuid: req.params.id,
+						id: req.params.id,
 					},
 				}
 			);
-			res.status(200).json({ msg: "User has been updated" });
+			return res.status(200).json({ message: "User has been updated" });
 		} catch (err) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.message,
 			});
 		}
@@ -57,14 +60,28 @@ const userController = {
 		try {
 			await db.users.destroy({
 				where: {
-					uuid: req.params.uuid,
+					id: req.params.id,
 				},
 			});
-			res.status(200).json({ msg: "User has been deleted" });
+			return res.status(200).json({ message: "User has been deleted" });
 		} catch (error) {
-			res.status(500).send({
+			return res.status(500).send({
 				message: err.message,
 			});
 		}
 	},
+	insertImage: async (req, res) => {
+		try {
+			const { filename } = req.file;
+			await db.users.update(
+				{ avatar_url: "userImg/" + filename },
+				{ where: { id: req.params.id } }
+			);
+			return res.send({ message: "Avatar Updated" });
+		} catch (err) {
+			return res.status(500).send({ message: err.message });
+		}
+	},
 };
+
+module.exports = userController;

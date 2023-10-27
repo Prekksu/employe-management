@@ -47,4 +47,14 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.tokens = require("./token")(sequelize, Sequelize);
+db.users = require("./user")(sequelize, Sequelize);
+db.companies = require("./company")(sequelize, Sequelize);
+db.positions = require("./position")(sequelize, Sequelize);
+
+db.companies.hasOne(db.users, { foreignKey: "company_id", targetKey: "id" });
+db.users.belongsTo(db.companies, { foreignKey: "company_id" });
+db.positions.hasOne(db.users, { foreignKey: "position_id", targetKey: "id" });
+db.users.belongsTo(db.positions, { foreignKey: "position_id" });
+
 module.exports = db;
