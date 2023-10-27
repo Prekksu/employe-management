@@ -50,16 +50,13 @@ const userController = {
 			const { email, phone_number, password } = req.body;
 			let user;
 
-			// Check if the user exists with email
 			if (email) {
 				user = await db.users.findOne({
 					where: {
 						email: email,
 					},
 				});
-			}
-			// If user doesn't exist with email, check with phone number
-			else if (phone_number) {
+			} else if (phone_number) {
 				user = await db.users.findOne({
 					where: {
 						phone_number: phone_number,

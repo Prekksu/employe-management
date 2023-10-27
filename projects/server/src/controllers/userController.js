@@ -4,9 +4,7 @@ const bcrypt = require("bcrypt");
 const userController = {
 	getAll: async (req, res) => {
 		try {
-			const user = await db.users.findAll({
-				attributes: ["uuid", "fullname", "email", "phone_number", "role"],
-			});
+			const user = await db.users.findAll();
 			return res.send(user);
 		} catch (err) {
 			return res.status(500).send({
@@ -83,8 +81,21 @@ const userController = {
 		}
 	},
 	assignPosition: async (req, res) => {
+		const { position_id, id } = req.body;
 		try {
-			const { position_id, id } = req.body;
+			await db.users.update({ position_id }, { where: { id } });
+			return res.send({ message: "Position assignment successful." });
+		} catch (error) {
+			return res.status(500).send({
+				message: error.message,
+			});
+		}
+	},
+	assignCompany: async (req, res) => {
+		const { company_id, id } = req.body;
+		try {
+			await db.users.update({ company_id }, { where: { id } });
+			return res.send({ message: "Company assignment successful." });
 		} catch (error) {
 			return res.status(500).send({
 				message: error.message,

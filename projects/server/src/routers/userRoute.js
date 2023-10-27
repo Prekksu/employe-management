@@ -15,4 +15,7 @@ router.post(
 	userController.insertImage
 );
 
+router.post("/assign-position", userController.assignPosition);
+router.post("/assign-company", userController.assignCompany);
+
 module.exports = router;
