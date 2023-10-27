@@ -1,10 +1,9 @@
-import { Center, Image } from "@chakra-ui/react";
 import LoadingLogo from "../assets/Infinity.svg";
 
 export default function Loading() {
 	return (
-		<Center w={"100vw"} h="100vh">
-			<Image w="100px" src={LoadingLogo}></Image>
-		</Center>
+		<div w={"100vw"} h="100vh">
+			<image w="100px" src={LoadingLogo}></image>
+		</div>
 	);
 }
