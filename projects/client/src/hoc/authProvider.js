@@ -13,26 +13,26 @@ export default function AuthProvider({ children }) {
 	}, []);
 
 	async function fetch() {
-		// try {
-		// 	const token = JSON.parse(localStorage.getItem("auth"));
-		// 	const user = await api()
-		// 		.get("/authentication/v2", {
-		// 			headers: {
-		// 				Authorization: `Bearer ${token}`,
-		// 			},
-		// 		})
-		// 		.then((res) => res.data);
-		// 	if (user) {
-		// 		dispatch({
-		// 			type: "login",
-		// 			payload: user,
-		// 		});
-		// 	}
-		// } catch (err) {
-		// 	setMessage(err);
-		// } finally {
-		// 	setIsLoading(false);
-		// }
+		try {
+			const token = JSON.parse(localStorage.getItem("auth"));
+			const user = await api()
+				.get("/auth/getToken", {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				})
+				.then((res) => res.data);
+			if (user) {
+				dispatch({
+					type: "login",
+					payload: user,
+				});
+			}
+		} catch (err) {
+			setMessage(err);
+		} finally {
+			setIsLoading(false);
+		}
 	}
 	return <>{isLoading ? <Loading /> : children}</>;
 }

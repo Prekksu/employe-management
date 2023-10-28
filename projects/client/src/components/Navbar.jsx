@@ -1,6 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const Navbar = () => {
+	const dispatch = useDispatch();
+	function logout() {
+		localStorage.removeItem("auth");
+		dispatch({
+			type: "logout",
+		});
+	}
 	return (
 		<nav className="uk-navbar-container">
 			<div className="uk-container">
@@ -16,9 +24,7 @@ const Navbar = () => {
 					<div className="uk-navbar-right">
 						<ul className="uk-navbar-nav">
 							<li>
-								<a href="/">
-									Profile Name <span uk-navbar-parent-icon="true"></span>
-								</a>
+								Profile Name <span uk-navbar-parent-icon="true"></span>
 								<div className="uk-navbar-dropdown">
 									<ul className="uk-nav uk-navbar-dropdown-nav">
 										<li>
@@ -28,7 +34,7 @@ const Navbar = () => {
 											<a href="/profile">Profile</a>
 										</li>
 										<li className="uk-nav-divider"></li>
-										<li>
+										<li onClick={logout}>
 											<a href="/login">Logout</a>
 										</li>
 									</ul>

@@ -1,6 +1,50 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../api/api";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 const LoginPage = () => {
+	const dispatch = useDispatch();
+	const nav = useNavigate();
+	const [userData, setUserData] = useState({
+		emailOrPhoneNumber: "",
+		password: "",
+	});
+	const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+	const handleLogin = async () => {
+		try {
+			const loginResponse = await api().post("/auth/login", userData);
+			const token = loginResponse.data.token;
+			const userDetailsResponse = await api().get("/auth/getToken", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const userDetails = userDetailsResponse.data;
+			localStorage.setItem("auth", JSON.stringify(token));
+			dispatch({
+				type: "login",
+				payload: userDetails,
+			});
+			nav("/");
+		} catch (error) {
+			alert(error.response.data.message);
+		}
+	};
+
+	const handleEmailOrPhoneNumberChange = (e) => {
+		const value = e.target.value;
+		setUserData({ ...userData, emailOrPhoneNumber: value });
+		setIsButtonDisabled(value === "" || userData.password === "");
+	};
+
+	const handlePasswordChange = (e) => {
+		const value = e.target.value;
+		setUserData({ ...userData, password: value });
+		setIsButtonDisabled(userData.emailOrPhoneNumber === "" || value === "");
+	};
+
 	return (
 		<div className="uk-flex uk-flex-center uk-flex-middle uk-height-viewport">
 			<div className="uk-card uk-card-default uk-card-body uk-width-medium">
@@ -8,14 +52,17 @@ const LoginPage = () => {
 				<form className="uk-form-stacked">
 					<div className="uk-margin">
 						<label className="uk-form-label" htmlFor="username">
-							Username:
+							Email / Phone Number:
 						</label>
 						<div className="uk-form-controls">
 							<input
 								className="uk-input"
 								type="text"
 								id="username"
-								placeholder="Enter your username"
+								placeholder="Enter your email/phone number"
+								value={userData.emailOrPhoneNumber} // Bind input value to state
+								onChange={handleEmailOrPhoneNumberChange}
+								required
 							/>
 						</div>
 					</div>
@@ -29,6 +76,9 @@ const LoginPage = () => {
 								type="password"
 								id="password"
 								placeholder="Enter your password"
+								value={userData.password}
+								onChange={handlePasswordChange}
+								required
 							/>
 						</div>
 					</div>
@@ -36,7 +86,12 @@ const LoginPage = () => {
 						<a href="/forgot-password">Forgot password?</a>
 					</p>
 					<div className="uk-margin uk-text-center">
-						<button className="uk-button uk-button-primary" type="submit">
+						<button
+							className="uk-button uk-button-primary"
+							type="button"
+							onClick={handleLogin}
+							disabled={isButtonDisabled}
+						>
 							Login
 						</button>
 					</div>

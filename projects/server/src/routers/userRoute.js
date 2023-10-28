@@ -15,7 +15,15 @@ router.post(
 	userController.insertImage
 );
 
-router.post("/assign-position", userController.assignPosition);
-router.post("/assign-company", userController.assignCompany);
+router.post(
+	"/assign-position",
+	checkRole.checkUser,
+	userController.assignPosition
+);
+router.post(
+	"/assign-company",
+	checkRole.checkUser,
+	userController.assignCompany
+);
 
 module.exports = router;

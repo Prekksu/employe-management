@@ -1,6 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { api } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+	const nav = useNavigate();
+
+	const [userData, setUserData] = useState({
+		fullname: "",
+		email: "",
+		phone_number: "",
+		password: "",
+	});
+
+	const isFormValid = () => {
+		return Object.values(userData).every((value) => value.trim() !== "");
+	};
+
+	async function addUser() {
+		try {
+			await api().post("/auth", userData);
+			nav("/login");
+		} catch (error) {
+			alert(error.response.data.message);
+		}
+	}
+
+	const handleInputChange = (event) => {
+		const { id, value } = event.target;
+		setUserData({ ...userData, [id]: value });
+	};
+
+	const handleSubmit = () => {
+		if (isFormValid()) {
+			addUser();
+		} else {
+			alert("Please fill out all fields.");
+		}
+	};
 	return (
 		<div className="uk-flex uk-flex-center uk-flex-middle uk-height-viewport">
 			<div className="uk-card uk-card-default uk-card-body uk-width-medium">
@@ -16,6 +52,8 @@ const RegisterPage = () => {
 								type="text"
 								id="fullname"
 								placeholder="Enter your full name"
+								value={userData.fullname}
+								onChange={handleInputChange}
 								required
 							/>
 						</div>
@@ -30,6 +68,8 @@ const RegisterPage = () => {
 								type="email"
 								id="email"
 								placeholder="Enter your email"
+								value={userData.email}
+								onChange={handleInputChange}
 								required
 							/>
 						</div>
@@ -42,8 +82,10 @@ const RegisterPage = () => {
 							<input
 								className="uk-input"
 								type="tel"
-								id="phone"
+								id="phone_number"
 								placeholder="Enter your phone number"
+								value={userData.phone_number}
+								onChange={handleInputChange}
 								required
 							/>
 						</div>
@@ -58,12 +100,19 @@ const RegisterPage = () => {
 								type="password"
 								id="password"
 								placeholder="Enter your password"
+								value={userData.password}
+								onChange={handleInputChange}
 								required
 							/>
 						</div>
 					</div>
 					<div className="uk-margin uk-text-center">
-						<button className="uk-button uk-button-primary" type="submit">
+						<button
+							className="uk-button uk-button-primary"
+							type="button"
+							onClick={handleSubmit}
+							disabled={!isFormValid()}
+						>
 							Register
 						</button>
 					</div>

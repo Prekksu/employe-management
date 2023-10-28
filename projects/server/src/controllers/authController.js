@@ -47,22 +47,20 @@ const userController = {
 	},
 	login: async (req, res) => {
 		try {
-			const { email, phone_number, password } = req.body;
-			let user;
+			const { emailOrPhoneNumber, password } = req.body;
 
-			if (email) {
-				user = await db.users.findOne({
-					where: {
-						email: email,
-					},
-				});
-			} else if (phone_number) {
-				user = await db.users.findOne({
-					where: {
-						phone_number: phone_number,
-					},
-				});
-			}
+			const user = await db.users.findOne({
+				where: {
+					[Op.or]: [
+						{
+							email: emailOrPhoneNumber,
+						},
+						{
+							phone_number: emailOrPhoneNumber,
+						},
+					],
+				},
+			});
 
 			if (!user) {
 				return res.status(404).send({
@@ -127,6 +125,53 @@ const userController = {
 			});
 		}
 	},
+	resetPassword: async (req, res) => {
+		try {
+			const { email } = req.body;
+			const findEmail = await db.users.findOne({ where: { email } });
+
+			if (!findEmail) {
+				throw new Error("Username or email not found");
+			} else {
+				const generateToken = jwt.sign(
+					{ userId: findEmail.dataValues.id },
+					secretKey,
+					{
+						expiresIn: "1d",
+					}
+				);
+				console.log("masuk");
+				const token = await db.tokens.create({
+					expired: moment().add(1, "days").format(),
+					token: generateToken,
+					userId: JSON.stringify({ id: findEmail.dataValues.id }),
+					status: "FORGOT-PASSWORD",
+				});
+
+				const template = await fs.readFile(
+					path.join(__dirname, "../template/resetPassword.html"),
+					"utf-8"
+				);
+
+				let compiledTemplate = handlebars.compile(template);
+				let resetPasswordTemplate = compiledTemplate({
+					registrationLink: `${process.env.URL_RESET_PASSWORD}/reset-password/${token.dataValues.token}`,
+				});
+
+				mailer({
+					subject: "Reset Password - Email Verification Link",
+					to: email,
+					text: resetPasswordTemplate,
+				});
+
+				return res.send({
+					message: "Reset password berhasil",
+				});
+			}
+		} catch (err) {
+			return res.status(500).send(err.message);
+		}
+	},
 	getToken: async (req, res, next) => {
 		try {
 			let token = req.headers.authorization;
@@ -161,48 +206,6 @@ const userController = {
 			return res.status(500).send({ message: err.message });
 		}
 	},
-	resetPassword: async (req, res) => {
-		try {
-			const { email } = req.body;
-			const findEmail = await db.users.findOne({ where: { email } });
-
-			if (!findEmail) {
-				throw new Error("Username or email not found");
-			} else {
-				const generateToken = jwt.sign(secretKey, {
-					expiresIn: "1d",
-				});
-				const token = await db.tokens.create({
-					expired: moment().add(1, "days").format(),
-					token: generateToken,
-					userId: JSON.stringify({ id: findEmail.dataValues.id }),
-					status: "FORGOT-PASSWORD",
-				});
-
-				const template = await fs.readFile(
-					path.join(__dirname, "../template/resetPassword.html"),
-					"utf-8"
-				);
-
-				let compiledTemplate = handlebars.compile(template);
-				let resetPasswordTemplate = compiledTemplate({
-					registrationLink: `${process.env.URL_RESET_PASSWORD}/reset-password/${token.dataValues.token}`,
-				});
-
-				mailer({
-					subject: "Reset Password - Email Verification Link",
-					to: email,
-					text: resetPasswordTemplate,
-				});
-
-				return res.send({
-					message: "Reset password berhasil",
-				});
-			}
-		} catch (err) {
-			return res.status(500).send(err.message);
-		}
-	},
 	verify: async (req, res) => {
 		try {
 			const { id } = req.user;
@@ -227,6 +230,9 @@ const userController = {
 		} catch (err) {
 			return res.status(500).send(err.message);
 		}
+	},
+	getUserByToken: async (req, res) => {
+		res.send(req.user);
 	},
 };
 
