@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import UIkit from "uikit";
 
 const RegisterPage = () => {
 	const nav = useNavigate();
@@ -20,6 +21,7 @@ const RegisterPage = () => {
 		try {
 			await api().post("/auth", userData);
 			nav("/login");
+			UIkit.notification({ message: "Register success", status: "success" });
 		} catch (error) {
 			alert(error.response.data.message);
 		}

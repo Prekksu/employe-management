@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import UserList from "./UserList";
 import ModalAddUser from "./ModalAddUser";
+import ModalAddPosition from "./ModalAddPosition";
 
 const Dashboard = () => {
 	const [user, setUser] = useState([]);
@@ -21,16 +22,72 @@ const Dashboard = () => {
 
 	return (
 		<>
-			<button
-				className="uk-button uk-button-primary"
-				uk-toggle="target: #add-user-modal"
-			>
-				Add User
-			</button>
-			<div id="add-user-modal" uk-modal="true">
-				<div className="uk-modal-dialog uk-modal-body">
-					<ModalAddUser />
-				</div>
+			<div>
+				<ul class="uk-subnav uk-subnav-pill" uk-margin>
+					<li>
+						<a href>
+							<span uk-icon="icon:  plus"></span>
+						</a>
+						<div uk-dropdown="mode: click">
+							<ul class="uk-nav uk-dropdown-nav">
+								<li style={{ marginBottom: "10px" }}>
+									<div
+										style={{ cursor: "pointer" }}
+										uk-toggle="target: #add-user-modal"
+									>
+										Add User
+									</div>
+								</li>
+								<li style={{ marginBottom: "10px" }}>
+									<div
+										style={{ cursor: "pointer" }}
+										uk-toggle="target: #add-position-modal"
+									>
+										Add Position
+									</div>
+								</li>
+								<li style={{ marginBottom: "10px" }}>
+									<div style={{ cursor: "pointer" }} href="#">
+										Add Company
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href>
+							<span
+								uk-icon="icon:   pencil
+"
+							></span>
+						</a>
+						<div uk-dropdown="mode: click">
+							<ul class="uk-nav uk-dropdown-nav">
+								<li>
+									<a href="#">Edit Position</a>
+								</li>
+								<li>
+									<a href="#">Edit Company</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href>
+							<span uk-icon="icon:  trash"></span>
+						</a>
+						<div uk-dropdown="mode: click">
+							<ul class="uk-nav uk-dropdown-nav">
+								<li>
+									<a href="#">Delete Position</a>
+								</li>
+								<li>
+									<a href="#">Delete Company</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
 			</div>
 
 			<div className="uk-child-width-expand@s" uk-grid="true">
@@ -60,6 +117,16 @@ const Dashboard = () => {
 			{user.map((val) => {
 				return <UserList val={val} getUser={getUser} />;
 			})}
+			<div id="add-user-modal" uk-modal="true">
+				<div className="uk-modal-dialog uk-modal-body">
+					<ModalAddUser />
+				</div>
+			</div>
+			<div id="add-position-modal" uk-modal="true">
+				<div className="uk-modal-dialog uk-modal-body">
+					<ModalAddPosition />
+				</div>
+			</div>
 		</>
 	);
 };

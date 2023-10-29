@@ -7,6 +7,7 @@ const ModalAddUser = () => {
 		email: "",
 		phone_number: "",
 		password: "",
+		role: "",
 		company_id: "",
 		position_id: "",
 	});
@@ -76,6 +77,23 @@ const ModalAddUser = () => {
 					onChange={handleInputChange}
 					required
 				/>
+			</div>
+			<div className="uk-margin">
+				<label className="uk-form-label">Role</label>
+				<select
+					className="uk-select"
+					name="role"
+					value={userData.role}
+					onChange={handleInputChange}
+					required
+				>
+					<option value="" disabled>
+						Select a role
+					</option>
+					<option>S_ADMIN</option>
+					<option>HR_ADMIN</option>
+					<option>EMPLOYE</option>
+				</select>
 			</div>
 			<div className="uk-margin">
 				<label className="uk-form-label">Company</label>

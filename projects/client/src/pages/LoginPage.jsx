@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import UIkit from "uikit";
 
 const LoginPage = () => {
 	const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const LoginPage = () => {
 				type: "login",
 				payload: userDetails,
 			});
+			UIkit.notification({ message: "Login success", status: "success" });
 			nav("/");
 		} catch (error) {
 			alert(error.response.data.message);

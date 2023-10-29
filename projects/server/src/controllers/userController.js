@@ -37,7 +37,15 @@ const userController = {
 	},
 	createUser: async (req, res) => {
 		try {
-			const { fullname, email, phone_number, password, role } = value;
+			const {
+				fullname,
+				email,
+				phone_number,
+				password,
+				role,
+				company_id,
+				position_id,
+			} = value;
 			const hashPassword = await bcrypt.hash(password, 10);
 
 			await db.users.create({
@@ -46,6 +54,8 @@ const userController = {
 				phone_number,
 				password: hashPassword,
 				role,
+				company_id,
+				position_id,
 			});
 
 			return res.status(201).json({ message: "User has been created" });
@@ -57,12 +67,14 @@ const userController = {
 	},
 	editUser: async (req, res) => {
 		try {
-			const { fullname, password } = req.body;
+			const { fullname, password, email, phone_number } = req.body;
 
 			await db.users.update(
 				{
 					fullname,
 					password,
+					email,
+					phone_number,
 				},
 				{
 					where: {

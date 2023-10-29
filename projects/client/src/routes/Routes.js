@@ -9,32 +9,11 @@ import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 
 const routes = [
-	<Route
-		path="/"
-		element={
-			<ProtectedPages needLogin={true}>
-				<Homepage />
-			</ProtectedPages>
-		}
-	/>,
+	<Route path="/" element={<Homepage />} />,
 	<Route path="/profile" element={<ProfilePage />} />,
 	<Route path="/dashboard" element={<DashboardPage />} />,
-	<Route
-		path="/register"
-		element={
-			<ProtectedPages needLogin={true}>
-				<RegisterPage />
-			</ProtectedPages>
-		}
-	/>,
-	<Route
-		path="/login"
-		element={
-			<ProtectedPages needLogin={true}>
-				<LoginPage />
-			</ProtectedPages>
-		}
-	/>,
+	<Route path="/register" element={<RegisterPage />} />,
+	<Route path="/login" element={<LoginPage />} />,
 	<Route path="/forgot-password" element={<ForgotPasswordPage />} />,
 	<Route path="/reset-password/:token" element={<ResetPasswordPage />} />,
 ];

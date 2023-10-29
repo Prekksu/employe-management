@@ -23,27 +23,29 @@ const UserList = ({ val, getUser }) => {
 
 			<div>
 				<ul className="uk-list">
-					<li>{val?.fullname}</li>
+					<li>{val?.company_id}</li>
 				</ul>
 			</div>
 
 			<div>
 				<ul className="uk-list">
-					<li>{val.fullname}</li>
+					<li>{val.position_id}</li>
 				</ul>
 			</div>
-			<div uk-navbar="true">
-				<ul className="uk-navbar-nav">
+			<div>
+				<ul class="uk-subnav uk-subnav-pill" uk-margin>
 					<li>
-						<span uk-navbar-parent-icon="true"></span>
-						<div className="uk-navbar-dropdown">
-							<ul className="uk-nav uk-navbar-dropdown-nav">
+						<a href>
+							<span uk-icon="icon: more"></span>
+						</a>
+						<div uk-dropdown="mode: click">
+							<ul class="uk-nav uk-dropdown-nav">
 								<li>
-									<div>Edit</div>
+									<a href="#">Edit</a>
 								</li>
-								<br />
+								<li class="uk-nav-divider"></li>
 								<li>
-									<div>Delete</div>
+									<a href="#">Delete</a>
 								</li>
 							</ul>
 						</div>

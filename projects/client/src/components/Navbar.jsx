@@ -29,7 +29,8 @@ const Navbar = () => {
 					<div className="uk-navbar-right">
 						<ul className="uk-navbar-nav">
 							<li>
-								{user.fullname} <span uk-navbar-parent-icon="true"></span>
+								{user.role}
+								<span uk-navbar-parent-icon="true"></span>
 								<div className="uk-navbar-dropdown">
 									<ul className="uk-nav uk-navbar-dropdown-nav">
 										<li>

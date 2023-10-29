@@ -1,34 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
-import ModalEditProfile from "./ModalEditProfile";
+import UIkit from "uikit";
 
 const Profile = () => {
 	const user = useSelector((state) => state.auth);
 	const inputFileRef = useRef(null);
+	const [fullname, setFullName] = useState(user.fullname);
+	const [phone_number, setPhoneNumber] = useState(user.phone_number);
+	const [email, setEmail] = useState(user.email);
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [users, setUsers] = useState("");
-
-	async function uploadAvatar() {
-		const formData = new FormData();
-		formData.append("userImg", selectedFile);
-
-		try {
-			await api().post(`/user/${user.id}`, formData);
-			fetchData();
-		} catch (error) {
-			alert("File too large");
-		}
-	}
-
-	const fetchData = async () => {
-		try {
-			const response = await api().get(`/user/${user.id}`);
-			setUsers(response.data);
-		} catch (error) {
-			alert(error);
-		}
-	};
+	const [isDirty, setIsDirty] = useState(false);
 
 	useEffect(() => {
 		fetchData();
@@ -39,6 +22,55 @@ const Profile = () => {
 			uploadAvatar();
 		}
 	}, [selectedFile]);
+
+	useEffect(() => {
+		if (
+			fullname !== users.fullname ||
+			phone_number !== users.phone_number ||
+			email !== users.email
+		) {
+			setIsDirty(true);
+		} else {
+			setIsDirty(false);
+		}
+	}, [fullname, phone_number, email, users]);
+
+	async function uploadAvatar() {
+		const formData = new FormData();
+		formData.append("userImg", selectedFile);
+
+		try {
+			await api().post(`/user/${users.id}`, formData);
+			fetchData();
+			UIkit.notification({ message: "New Photo Saved", status: "success" });
+		} catch (error) {
+			alert("File too large");
+		}
+	}
+
+	const saveUser = async () => {
+		try {
+			await api().patch(`/user/${users.id}`, {
+				fullname: fullname,
+				phone_number: phone_number,
+				email: email,
+			});
+
+			fetchData();
+			UIkit.notification({ message: "Profile Saved", status: "success" });
+		} catch (error) {
+			fetchData();
+		}
+	};
+
+	const fetchData = async () => {
+		try {
+			const response = await api().get(`/user/${user.id}`);
+			setUsers(response.data);
+		} catch (error) {
+			alert(error);
+		}
+	};
 
 	const handleFile = (e) => {
 		setSelectedFile(e.target.files[0]);
@@ -66,32 +98,56 @@ const Profile = () => {
 						style={{ display: "none" }}
 						onChange={handleFile}
 					/>
+					<h3 className="uk-card-title uk-margin-remove-top">
+						{users?.fullname}
+					</h3>
 				</div>
 				<div className="uk-card-body">
-					<h3 className="uk-card-title">{users?.fullname}</h3>
-					<p className="uk-text-meta uk-margin-remove-top">
-						Company: {users?.company_id}
-					</p>
-					<p className="uk-text-meta uk-margin-remove-top">
-						Position: {users?.position_id}
-					</p>
-					<p className="uk-text-meta uk-margin-remove-top">
-						Email: {users?.email}
-					</p>
-					<p className="uk-text-meta uk-margin-remove-top">
-						Phone: {users?.phone_number}
-					</p>
+					<div>
+						<form>
+							<div className="uk-margin">
+								<label className="uk-form-label">Name:</label>
+								<input
+									className="uk-input"
+									type="text"
+									id="fullname"
+									value={fullname}
+									onChange={(e) => setFullName(e.target.value)}
+									required
+								/>
+							</div>
+							<div className="uk-margin">
+								<label className="uk-form-label">Email:</label>
+								<input
+									className="uk-input"
+									type="email"
+									id="email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									required
+								/>
+							</div>
+							<div className="uk-margin">
+								<label className="uk-form-label">Phone Number:</label>
+								<input
+									className="uk-input"
+									type="tel"
+									id="phone_number"
+									value={phone_number}
+									onChange={(e) => setPhoneNumber(e.target.value)}
+									required
+								/>
+							</div>
+						</form>
+					</div>
 					<button
 						className="uk-button uk-align-center uk-button-primary"
-						uk-toggle="target: #edit-profile-modal"
+						type="button"
+						onClick={saveUser}
+						disabled={!isDirty}
 					>
-						Edit Profile
+						Save
 					</button>
-					<div id="edit-profile-modal" uk-modal="true">
-						<div className="uk-modal-dialog uk-modal-body">
-							<ModalEditProfile fetchData={fetchData} users={users} />
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
