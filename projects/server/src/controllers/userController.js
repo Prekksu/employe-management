@@ -12,6 +12,29 @@ const userController = {
 			});
 		}
 	},
+	getUsersById: async (req, res) => {
+		try {
+			const response = await db.users.findOne({
+				attributes: [
+					"id",
+					"fullname",
+					"email",
+					"phone_number",
+					"avatar_url",
+					"position_id",
+					"company_id",
+				],
+				where: {
+					id: req.params.id,
+				},
+			});
+			res.status(200).json(response);
+		} catch (error) {
+			res.status(500).send({
+				message: err.message,
+			});
+		}
+	},
 	createUser: async (req, res) => {
 		try {
 			const { fullname, email, phone_number, password, role } = value;

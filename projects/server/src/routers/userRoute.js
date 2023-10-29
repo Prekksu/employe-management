@@ -5,6 +5,7 @@ const { fileUploader } = require("../middlewares/multer");
 const checkRole = require("../middlewares/roleDecoder");
 
 router.get("/", userController.getAll);
+router.get("/:id", userController.getUsersById);
 router.post("/", userController.createUser);
 router.patch("/:id", userController.editUser);
 router.delete("/:id", userController.deleteUser);

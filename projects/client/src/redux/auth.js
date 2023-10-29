@@ -7,6 +7,7 @@ function userReducer(state = init, action) {
 	if (action.type === "login") {
 		return {
 			...state,
+			id: action.payload.id,
 			fullname: action.payload.fullname,
 			email: action.payload.email,
 			phone_number: action.payload.phone_number,
