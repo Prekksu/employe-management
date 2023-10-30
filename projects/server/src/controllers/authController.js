@@ -140,7 +140,6 @@ const userController = {
 						expiresIn: "1d",
 					}
 				);
-				console.log("masuk");
 				const token = await db.tokens.create({
 					expired: moment().add(1, "days").format(),
 					token: generateToken,
