@@ -1,8 +1,15 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 
-const ProtectedPages = ({ children, needLogin, needLoginAdmin }) => {
+const ProtectedPages = ({
+	children,
+	redirect,
+	guestOnly,
+	needLogin,
+	needLoginAdmin,
+}) => {
 	const user = useSelector((state) => state.auth);
 	const nav = useNavigate();
 
@@ -15,21 +22,23 @@ const ProtectedPages = ({ children, needLogin, needLoginAdmin }) => {
 	}, [isLoading]);
 
 	useEffect(() => {
-		if (needLogin && user.role) {
+		if (redirect) {
+			return nav("/restricted");
+		} else if (guestOnly && user.role) {
 			return nav("/");
 		} else if (needLogin && !user.role) {
-			return nav("/login");
+			return nav("/not-found");
 		} else if (
 			needLogin &&
 			needLoginAdmin &&
-			user.role !== "S_ADMIN" &&
-			user.role !== "HR_ADMIN"
+			user.role !== "ADMIN" &&
+			user.role !== "W_ADMIN"
 		) {
-			return nav("/");
+			return nav("/restricted");
 		}
 	}, []);
 
-	return children;
+	return <>{isLoading ? <Loading /> : children}</>;
 };
 
 export default ProtectedPages;

@@ -1,33 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/api";
 
 const ResetPasswordPage = () => {
-	const location = useLocation();
+	const [token, setToken] = useState("");
+	const [password, setPassword] = useState("");
 	const nav = useNavigate();
-	const [user, setUser] = useState();
-	const [token, setToken] = useState();
-	const [newPassword, setNewPassword] = useState("");
+	const location = useLocation();
 
-	const fetchUser = async (data) => {
-		try {
-			const response = await api().get("/auth/getToken", {
-				headers: {
-					Authorization: "Bearer " + data,
-				},
-			});
-			setUser(response.data);
-		} catch (error) {
-			console.error(error);
-		}
+	useEffect(() => {
+		const tokenFromPath = location.pathname.split("/")[2];
+		setToken(tokenFromPath);
+	}, [location.pathname]);
+
+	const handlePasswordChange = (e) => {
+		setPassword(e.target.value);
 	};
 
-	async function handlePasswordReset() {
+	const handleFormSubmit = async (e) => {
+		e.preventDefault();
 		try {
 			await api().patch(
-				"/password/verify-password?token=" + token,
+				`/password/verify-password?token=${token}`,
 				{
-					password: newPassword,
+					password,
 				},
 				{
 					headers: {
@@ -35,18 +31,12 @@ const ResetPasswordPage = () => {
 					},
 				}
 			);
-			alert("Password Updated");
+
 			nav("/login");
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
-	}
-
-	useEffect(() => {
-		const token2 = location.pathname.split("/")[2];
-		setToken(token2);
-		fetchUser(token2);
-	}, [location.pathname]);
+	};
 
 	return (
 		<div className="uk-container uk-flex uk-flex-center uk-flex-middle uk-height-viewport">
@@ -54,7 +44,7 @@ const ResetPasswordPage = () => {
 				<h3 className="uk-card-title uk-text-center">
 					Password Reset Confirmation
 				</h3>
-				<>
+				<form onSubmit={handleFormSubmit}>
 					<div className="uk-margin">
 						<label className="uk-form-label" htmlFor="newPassword">
 							New Password:
@@ -65,22 +55,18 @@ const ResetPasswordPage = () => {
 								type="password"
 								id="password"
 								placeholder="Enter your new password"
-								value={newPassword}
-								onChange={(e) => setNewPassword(e.target.value)}
 								required
+								value={password}
+								onChange={handlePasswordChange}
 							/>
 						</div>
 					</div>
 					<div className="uk-margin uk-text-center">
-						<button
-							className="uk-button uk-button-primary"
-							type="button"
-							onClick={handlePasswordReset}
-						>
+						<button className="uk-button uk-button-primary" type="submit">
 							Submit
 						</button>
 					</div>
-				</>
+				</form>
 			</div>
 		</div>
 	);

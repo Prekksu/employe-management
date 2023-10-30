@@ -45,6 +45,7 @@ const userController = {
 					"avatar_url",
 					"position_id",
 					"company_id",
+					"password",
 				],
 				include: [
 					{

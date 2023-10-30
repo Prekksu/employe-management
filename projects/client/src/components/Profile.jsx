@@ -147,6 +147,7 @@ const Profile = () => {
 							</div>
 						</form>
 					</div>
+					<a href="/change-password">Change Password</a>
 					<button
 						className="uk-button uk-align-center uk-button-primary"
 						type="button"
