@@ -5,6 +5,42 @@ const bcrypt = require("bcrypt");
 const userController = {
 	getAll: async (req, res) => {
 		try {
+			const { sort, search, position_id, company_id } = req.query;
+			const limit = 5;
+
+			const page = req?.query?.page || 1;
+			let offset = (parseInt(page) - 1) * limit;
+
+			const sortOptions = {
+				fullnameAsc: [["fullname", "ASC"]],
+				fullnameDesc: [["fullname", "DESC"]],
+				emailAsc: [["email", "ASC"]],
+				emailDesc: [["email", "DESC"]],
+				phone_numberAsc: [["phone_number", "ASC"]],
+				phone_numberDesc: [["phone_number", "DESC"]],
+				roleAsc: [["role", "ASC"]],
+				roleDesc: [["role", "DESC"]],
+				positionAsc: [[{ model: db.positions }, "position", "ASC"]],
+				positionDesc: [[{ model: db.positions }, "position", "DESC"]],
+				companyAsc: [[{ model: db.companies }, "company_name", "ASC"]],
+				companyDesc: [[{ model: db.companies }, "company_name", "DESC"]],
+			};
+			const sortOrder = sortOptions[sort] || sortOptions.fullnameAsc;
+
+			const whereClause = {};
+
+			if (search) {
+				whereClause.fullname = { [db.Sequelize.Op.like]: `%${search || ""}%` };
+			}
+
+			if (position_id) {
+				whereClause.position_id = position_id;
+			}
+
+			if (company_id) {
+				whereClause.company_id = company_id;
+			}
+
 			const users = await db.users.findAndCountAll({
 				attributes: [
 					"id",
@@ -19,15 +55,19 @@ const userController = {
 				include: [
 					{
 						model: db.positions,
-						attributes: ["id", "position"],
 					},
 					{
 						model: db.companies,
-						attributes: ["id", "company_name"],
 					},
 				],
+				where: whereClause,
+				distinct: true,
+				order: sortOrder,
 			});
-			return res.send(users);
+			return res.status(200).send({
+				count: users.count,
+				rows: users.rows.slice(offset, limit * page),
+			});
 		} catch (err) {
 			return res.status(500).send({
 				message: err.message,

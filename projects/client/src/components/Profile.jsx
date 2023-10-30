@@ -12,7 +12,6 @@ const Profile = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [users, setUsers] = useState("");
 	const [isDirty, setIsDirty] = useState(false);
-	console.log(users);
 
 	useEffect(() => {
 		fetchData();

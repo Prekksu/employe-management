@@ -75,16 +75,6 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 					<h2>Add User</h2>
 					<form onSubmit={addUser}>
 						<div className="uk-margin">
-							<label className="uk-form-label">Photo:</label>
-							<input
-								className="uk-input"
-								type="file"
-								id="avatar_url"
-								onChange={handleInputChange}
-								accept="image/*" // Allow only image files to be selected
-							/>
-						</div>
-						<div className="uk-margin">
 							<label className="uk-form-label">Fullname:</label>
 							<input
 								className="uk-input"
@@ -185,6 +175,14 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 								value={userData.password}
 								onChange={handleInputChange}
 								required
+							/>
+						</div>
+						<div className="uk-margin">
+							<input
+								type="file"
+								id="avatar_url"
+								onChange={handleInputChange}
+								accept="image/*"
 							/>
 						</div>
 						<div className="uk-margin uk-text-right">
