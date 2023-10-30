@@ -40,8 +40,7 @@ const UserList = ({ val, getUser }) => {
 					<li>
 						<img
 							className="uk-border-circle"
-							width="50"
-							height="50"
+							style={{ width: "50px", height: "50px" }}
 							src={`${process.env.REACT_APP_API_BASE_URL}/${val?.avatar_url}`}
 							alt="Avatar"
 						/>

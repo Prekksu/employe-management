@@ -85,14 +85,12 @@ const Profile = () => {
 				<div className="uk-card-media-top uk-text-center">
 					<img
 						className="uk-border-circle uk-align-center"
-						width="100"
-						height="100"
+						style={{ width: "100px", height: "100px", cursor: "pointer" }}
 						src={`${process.env.REACT_APP_API_BASE_URL}/${users?.avatar_url}`}
 						alt="Avatar"
 						onClick={() => {
 							inputFileRef.current.click();
 						}}
-						style={{ cursor: "pointer" }}
 					/>
 					<input
 						accept="image/png, image/jpeg"

@@ -8,6 +8,7 @@ import ModalCompany from "./ModalCompany";
 import ModalDeletePosition from "./ModalDeletePosition";
 import ModalDeleteCompany from "./ModalDeleteCompany";
 import Pagination from "./Pagination";
+import UIkit from "uikit";
 
 const Dashboard = () => {
 	const inputFileRef = useRef(null);
@@ -96,7 +97,11 @@ const Dashboard = () => {
 	};
 
 	return (
-		<>
+		<div
+			style={{
+				maxWidth: "1400",
+			}}
+		>
 			<div className="uk-flex uk-flex-middle uk-margin-bottom ">
 				<div className="uk-flex uk-flex-middle uk-margin-right uk-search uk-search-default">
 					<input
@@ -328,7 +333,7 @@ const Dashboard = () => {
 				isOpen={deleteCompanyModal}
 				toggleModal={toggleDeleteCompanyModal}
 			/>
-		</>
+		</div>
 	);
 };
 
