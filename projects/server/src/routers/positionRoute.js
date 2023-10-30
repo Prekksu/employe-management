@@ -4,6 +4,7 @@ const positionController = require("../controllers").positionController;
 const checkRole = require("../middlewares/roleDecoder");
 
 router.get("/", positionController.getAll);
+router.get("/:id", positionController.getPositionById);
 router.post("/", checkRole.checkAdmin, positionController.createPosition);
 router.patch("/:id", checkRole.checkAdmin, positionController.editPosition);
 router.delete("/:id", checkRole.checkAdmin, positionController.deletePosition);

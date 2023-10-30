@@ -12,6 +12,18 @@ const companyController = {
 			});
 		}
 	},
+	getCompanyById: async (req, res) => {
+		const { id } = req.params;
+		try {
+			const company = await db.companies.findOne({ where: { id } });
+			if (!company) {
+				return res.status(404).send({ message: "Company not found" });
+			}
+			return res.status(200).send(company);
+		} catch (error) {
+			return res.status(500).send({ message: error.message });
+		}
+	},
 	createCompany: async (req, res) => {
 		const { company_name } = req.body;
 		try {

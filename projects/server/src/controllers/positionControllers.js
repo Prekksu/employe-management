@@ -5,11 +5,26 @@ const positionController = {
 	getAll: async (req, res) => {
 		try {
 			const position = await db.positions.findAll();
-			return res.send(position);
+			const sortedPosition = position.sort((a, b) => {
+				return a.position.localeCompare(b.position);
+			});
+			return res.send(sortedPosition);
 		} catch (err) {
 			res.status(500).send({
 				message: err.message,
 			});
+		}
+	},
+	getPositionById: async (req, res) => {
+		const { id } = req.params;
+		try {
+			const position = await db.positions.findOne({ where: { id } });
+			if (!position) {
+				return res.status(404).send({ message: "Position not found" });
+			}
+			return res.status(200).send(position);
+		} catch (err) {
+			return res.status(500).send({ message: err.message });
 		}
 	},
 	createPosition: async (req, res) => {

@@ -1,6 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import { api } from "../api/api";
+import UIkit from "uikit";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 const UserList = ({ val, getUser }) => {
+	const [deleteUserModal, setDeleteUserModal] = useState(false);
+
+	const toggleDeleteUserModal = () => {
+		setDeleteUserModal(!deleteUserModal);
+	};
+
+	async function deleteUser() {
+		try {
+			await api().delete(`/user/${val.id}`);
+
+			UIkit.notification({
+				message: "User deleted successfully!",
+				status: "success",
+			});
+			getUser();
+			toggleDeleteUserModal();
+		} catch (error) {
+			UIkit.notification({
+				message: error.response.data.message,
+				status: "danger",
+			});
+		}
+	}
 	return (
 		<div className="uk-child-width-expand@s" uk-grid="true">
 			<div>
@@ -40,17 +66,28 @@ const UserList = ({ val, getUser }) => {
 						</a>
 						<div uk-dropdown="mode: click">
 							<ul class="uk-nav uk-dropdown-nav">
-								<li>
-									<a href="#">Edit</a>
+								<li style={{ marginBottom: "10px" }}>
+									<div style={{ cursor: "pointer" }}>Edit</div>
 								</li>
 								<li class="uk-nav-divider"></li>
-								<li>
-									<a href="#">Delete</a>
+								<li style={{ marginBottom: "10px" }}>
+									<div
+										style={{ cursor: "pointer" }}
+										onClick={toggleDeleteUserModal}
+									>
+										Delete{" "}
+									</div>
 								</li>
 							</ul>
 						</div>
 					</li>
 				</ul>
+				<ModalDeleteUser
+					isOpen={deleteUserModal}
+					toggleModal={toggleDeleteUserModal}
+					deleteUser={deleteUser}
+					val={val}
+				/>
 			</div>
 		</div>
 	);

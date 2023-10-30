@@ -1,11 +1,37 @@
 import React, { useEffect, useState } from "react";
+import "../css/Modal.css";
 import { api } from "../api/api";
 import UserList from "./UserList";
 import ModalAddUser from "./ModalAddUser";
-import ModalAddPosition from "./ModalAddPosition";
+import ModalPosition from "./ModalPosition";
+import ModalCompany from "./ModalCompany";
+import ModalDeletePosition from "./ModalDeletePosition";
+import ModalDeleteCompany from "./ModalDeleteCompany";
 
 const Dashboard = () => {
 	const [user, setUser] = useState([]);
+	const [addUserModal, setAddUserModal] = useState(false);
+	const [positionModal, setPositionModal] = useState(false);
+	const [companyModal, setCompanyModal] = useState(false);
+	const [deletePositionModal, setDeletePositionModal] = useState(false);
+	const [deleteCompanyModal, setDeleteCompanyModal] = useState(false);
+
+	const toggleAddUserModal = () => {
+		setAddUserModal(!addUserModal);
+	};
+
+	const togglePositionModal = () => {
+		setPositionModal(!positionModal);
+	};
+	const toggleCompanyModal = () => {
+		setCompanyModal(!companyModal);
+	};
+	const toggleDeletePositionModal = () => {
+		setDeletePositionModal(!deletePositionModal);
+	};
+	const toggleDeleteCompanyModal = () => {
+		setDeleteCompanyModal(!deleteCompanyModal);
+	};
 
 	useEffect(() => {
 		getUser();
@@ -33,7 +59,7 @@ const Dashboard = () => {
 								<li style={{ marginBottom: "10px" }}>
 									<div
 										style={{ cursor: "pointer" }}
-										uk-toggle="target: #add-user-modal"
+										onClick={toggleAddUserModal}
 									>
 										Add User
 									</div>
@@ -41,33 +67,18 @@ const Dashboard = () => {
 								<li style={{ marginBottom: "10px" }}>
 									<div
 										style={{ cursor: "pointer" }}
-										uk-toggle="target: #add-position-modal"
+										onClick={togglePositionModal}
 									>
 										Add Position
 									</div>
 								</li>
 								<li style={{ marginBottom: "10px" }}>
-									<div style={{ cursor: "pointer" }} href="#">
+									<div
+										style={{ cursor: "pointer" }}
+										onClick={toggleCompanyModal}
+									>
 										Add Company
 									</div>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li>
-						<a href>
-							<span
-								uk-icon="icon:   pencil
-"
-							></span>
-						</a>
-						<div uk-dropdown="mode: click">
-							<ul class="uk-nav uk-dropdown-nav">
-								<li>
-									<a href="#">Edit Position</a>
-								</li>
-								<li>
-									<a href="#">Edit Company</a>
 								</li>
 							</ul>
 						</div>
@@ -78,11 +89,21 @@ const Dashboard = () => {
 						</a>
 						<div uk-dropdown="mode: click">
 							<ul class="uk-nav uk-dropdown-nav">
-								<li>
-									<a href="#">Delete Position</a>
+								<li style={{ marginBottom: "10px" }}>
+									<div
+										style={{ cursor: "pointer" }}
+										onClick={toggleDeletePositionModal}
+									>
+										Delete Position
+									</div>
 								</li>
-								<li>
-									<a href="#">Delete Company</a>
+								<li style={{ marginBottom: "10px" }}>
+									<div
+										style={{ cursor: "pointer" }}
+										onClick={toggleDeleteCompanyModal}
+									>
+										Delete Company
+									</div>
 								</li>
 							</ul>
 						</div>
@@ -117,16 +138,21 @@ const Dashboard = () => {
 			{user.map((val) => {
 				return <UserList val={val} getUser={getUser} />;
 			})}
-			<div id="add-user-modal" uk-modal="true">
-				<div className="uk-modal-dialog uk-modal-body">
-					<ModalAddUser />
-				</div>
-			</div>
-			<div id="add-position-modal" uk-modal="true">
-				<div className="uk-modal-dialog uk-modal-body">
-					<ModalAddPosition />
-				</div>
-			</div>
+			<ModalAddUser
+				isOpen={addUserModal}
+				toggleModal={toggleAddUserModal}
+				getUser={getUser}
+			/>
+			<ModalPosition isOpen={positionModal} toggleModal={togglePositionModal} />
+			<ModalCompany isOpen={companyModal} toggleModal={toggleCompanyModal} />
+			<ModalDeletePosition
+				isOpen={deletePositionModal}
+				toggleModal={toggleDeletePositionModal}
+			/>
+			<ModalDeleteCompany
+				isOpen={deleteCompanyModal}
+				toggleModal={toggleDeleteCompanyModal}
+			/>
 		</>
 	);
 };

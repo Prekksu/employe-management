@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 const bcrypt = require("bcrypt");
 
@@ -45,7 +46,20 @@ const userController = {
 				role,
 				company_id,
 				position_id,
-			} = value;
+			} = req.body;
+
+			const existingUser = await db.users.findOne({
+				where: {
+					[Op.or]: [{ email }, { phone_number }],
+				},
+			});
+
+			if (existingUser) {
+				return res.status(400).send({
+					message: "User with this email or phone number already exists.",
+				});
+			}
+
 			const hashPassword = await bcrypt.hash(password, 10);
 
 			await db.users.create({
