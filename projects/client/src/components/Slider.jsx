@@ -61,14 +61,14 @@ const Slider = () => {
 				onClick={goToPreviousSlide}
 				style={{ cursor: "pointer" }}
 			>
-				{`<`}
+				<span uk-icon="icon:  chevron-left"></span>
 			</div>
 			<div
 				className="uk-position-center-right uk-position-small uk-hidden-hover"
 				onClick={goToNextSlide}
 				style={{ cursor: "pointer" }}
 			>
-				{`>`}
+				<span uk-icon="icon:  chevron-right"></span>{" "}
 			</div>
 		</div>
 	);

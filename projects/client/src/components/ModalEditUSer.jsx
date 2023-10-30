@@ -93,13 +93,10 @@ const ModalEditUSer = ({ isOpen, toggleModal, val, getUser }) => {
 							className="uk-select"
 							id="company_id"
 							placeholder="Choose Company"
-							defaultValue={val?.company_name}
+							defaultValue={val?.company_id}
 							onChange={inputHandler}
 							required
 						>
-							<option value="" disabled>
-								Select a company
-							</option>
 							{company.length
 								? company.map((val) => (
 										<option key={val.id} value={val.id}>
@@ -113,11 +110,10 @@ const ModalEditUSer = ({ isOpen, toggleModal, val, getUser }) => {
 							className="uk-select"
 							id="position_id"
 							placeholder="Choose Position"
-							defaultValue={val?.position}
+							defaultValue={val?.position_id}
 							onChange={inputHandler}
 							required
 						>
-							<option value="">Select a position</option>
 							{position.length
 								? position.map((val) => (
 										<option key={val.id} value={val.id}>
