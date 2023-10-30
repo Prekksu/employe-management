@@ -44,7 +44,10 @@ const Profile = () => {
 			fetchData();
 			UIkit.notification({ message: "New Photo Saved", status: "success" });
 		} catch (error) {
-			alert("File too large");
+			UIkit.notification({
+				message: "File is to large",
+				status: "danger",
+			});
 		}
 	}
 

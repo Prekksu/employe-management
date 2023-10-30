@@ -69,7 +69,7 @@ const Dashboard = () => {
 										style={{ cursor: "pointer" }}
 										onClick={togglePositionModal}
 									>
-										Add Position
+										Add / Edit Position
 									</div>
 								</li>
 								<li style={{ marginBottom: "10px" }}>
@@ -77,12 +77,13 @@ const Dashboard = () => {
 										style={{ cursor: "pointer" }}
 										onClick={toggleCompanyModal}
 									>
-										Add Company
+										Add / Edit Company
 									</div>
 								</li>
 							</ul>
 						</div>
 					</li>
+
 					<li>
 						<a href>
 							<span uk-icon="icon:  trash"></span>

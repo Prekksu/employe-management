@@ -5,7 +5,18 @@ const bcrypt = require("bcrypt");
 const userController = {
 	getAll: async (req, res) => {
 		try {
-			const user = await db.users.findAll();
+			const user = await db.users.findAll({
+				attributes: [
+					"id",
+					"fullname",
+					"email",
+					"phone_number",
+					"avatar_url",
+					"position_id",
+					"company_id",
+					"role",
+				],
+			});
 			return res.send(user);
 		} catch (err) {
 			return res.status(500).send({
@@ -81,12 +92,11 @@ const userController = {
 	},
 	editUser: async (req, res) => {
 		try {
-			const { fullname, password, email, phone_number } = req.body;
+			const { fullname, email, phone_number } = req.body;
 
 			await db.users.update(
 				{
 					fullname,
-					password,
 					email,
 					phone_number,
 				},
@@ -100,6 +110,57 @@ const userController = {
 		} catch (err) {
 			return res.status(500).send({
 				message: err.message,
+			});
+		}
+	},
+	adminEditUser: async (req, res) => {
+		const { id } = req.params;
+		const {
+			fullname,
+			email,
+			phone_number,
+			company_id,
+			position_id,
+			role,
+			avatar_url,
+		} = req.body;
+
+		try {
+			const existingUser = await db.users.findOne({
+				where: {
+					[Op.and]: [
+						{ [Op.or]: [{ email }, { phone_number }] },
+						{ id: { [Op.not]: id } },
+					],
+				},
+			});
+
+			if (existingUser) {
+				return res.status(400).send({
+					message: "User with this email or phone number already exists.",
+				});
+			}
+
+			await db.users.update(
+				{
+					fullname,
+					email,
+					phone_number,
+					company_id,
+					position_id,
+					role,
+					avatar_url,
+				},
+				{
+					where: {
+						id: id,
+					},
+				}
+			);
+			return res.status(200).json({ message: "User has been updated" });
+		} catch (error) {
+			return res.status(500).send({
+				message: error.message,
 			});
 		}
 	},

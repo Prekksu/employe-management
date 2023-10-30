@@ -2,9 +2,15 @@ import React, { useState } from "react";
 import { api } from "../api/api";
 import UIkit from "uikit";
 import ModalDeleteUser from "./ModalDeleteUser";
+import ModalEditUSer from "./ModalEditUSer";
 
 const UserList = ({ val, getUser }) => {
+	const [editUserModal, setEditUserModal] = useState(false);
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
+
+	const toggleEditUserModal = () => {
+		setEditUserModal(!editUserModal);
+	};
 
 	const toggleDeleteUserModal = () => {
 		setDeleteUserModal(!deleteUserModal);
@@ -30,8 +36,17 @@ const UserList = ({ val, getUser }) => {
 	return (
 		<div className="uk-child-width-expand@s" uk-grid="true">
 			<div>
-				<ul className="uk-list uk-list-disc">
-					<li>{val?.fullname}</li>
+				<ul className="uk-list">
+					<li>
+						<img
+							className="uk-border-circle"
+							width="50"
+							height="50"
+							src={`${process.env.REACT_APP_API_BASE_URL}/${val?.avatar_url}`}
+							alt="Avatar"
+						/>
+						{val?.fullname}
+					</li>
 				</ul>
 			</div>
 
@@ -67,7 +82,12 @@ const UserList = ({ val, getUser }) => {
 						<div uk-dropdown="mode: click">
 							<ul class="uk-nav uk-dropdown-nav">
 								<li style={{ marginBottom: "10px" }}>
-									<div style={{ cursor: "pointer" }}>Edit</div>
+									<div
+										style={{ cursor: "pointer" }}
+										onClick={toggleEditUserModal}
+									>
+										Edit
+									</div>
 								</li>
 								<li class="uk-nav-divider"></li>
 								<li style={{ marginBottom: "10px" }}>
@@ -82,6 +102,12 @@ const UserList = ({ val, getUser }) => {
 						</div>
 					</li>
 				</ul>
+				<ModalEditUSer
+					isOpen={editUserModal}
+					toggleModal={toggleEditUserModal}
+					val={val}
+					getUser={getUser}
+				/>
 				<ModalDeleteUser
 					isOpen={deleteUserModal}
 					toggleModal={toggleDeleteUserModal}
