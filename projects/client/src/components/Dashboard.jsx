@@ -40,7 +40,7 @@ const Dashboard = () => {
 	const getUser = async () => {
 		try {
 			const res = await api().get(`/user`);
-			setUser(res.data);
+			setUser(res.data.rows);
 		} catch (error) {
 			alert(error);
 		}

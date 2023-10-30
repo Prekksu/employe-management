@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const userController = {
 	getAll: async (req, res) => {
 		try {
-			const user = await db.users.findAll({
+			const users = await db.users.findAndCountAll({
 				attributes: [
 					"id",
 					"fullname",
@@ -16,8 +16,18 @@ const userController = {
 					"company_id",
 					"role",
 				],
+				include: [
+					{
+						model: db.positions,
+						attributes: ["id", "position"],
+					},
+					{
+						model: db.companies,
+						attributes: ["id", "company_name"],
+					},
+				],
 			});
-			return res.send(user);
+			return res.send(users);
 		} catch (err) {
 			return res.status(500).send({
 				message: err.message,
@@ -93,6 +103,21 @@ const userController = {
 	editUser: async (req, res) => {
 		try {
 			const { fullname, email, phone_number } = req.body;
+
+			const existingUser = await db.users.findOne({
+				where: {
+					[Op.and]: [
+						{ [Op.or]: [{ email }, { phone_number }] },
+						{ id: { [Op.not]: id } },
+					],
+				},
+			});
+
+			if (existingUser) {
+				return res.status(400).send({
+					message: "User with this email or phone number already exists.",
+				});
+			}
 
 			await db.users.update(
 				{

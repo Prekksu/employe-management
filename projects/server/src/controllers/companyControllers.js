@@ -5,7 +5,10 @@ const companyController = {
 	getAll: async (req, res) => {
 		try {
 			const company = await db.companies.findAll();
-			return res.send(company);
+			const sortedCompanies = company.sort((a, b) => {
+				return a.company_name.localeCompare(b.company_name);
+			});
+			return res.send(sortedCompanies);
 		} catch (err) {
 			res.status(500).send({
 				message: err.message,

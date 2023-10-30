@@ -6,31 +6,17 @@ const ModalEditUSer = ({ isOpen, toggleModal, val, getUser }) => {
 	const [user, setUser] = useState(val);
 	const [position, setPosition] = useState([]);
 	const [company, setCompany] = useState([]);
-	const [selectedFile, setSelectedFile] = useState(null);
 	console.log(user);
 
 	useEffect(() => {
 		setUser(val);
-	}, [val]);
-
-	useEffect(() => {
 		getPosition();
 		getCompany();
-	}, [isOpen]);
+	}, [val, isOpen]);
 
 	const editUSer = async () => {
-		const formData = new FormData();
-		formData.append("fullname", user.fullname);
-		formData.append("email", user.email);
-		formData.append("phone_number", user.phone_number);
-		formData.append("role", user.role);
-		formData.append("position_id", user.position_id);
-		formData.append("company_id", user.company_id);
-		if (selectedFile) {
-			formData.append("userImg", selectedFile);
-		}
 		try {
-			await api().patch(`/user/admin/${val.id}`, formData);
+			await api().patch(`/user/admin/${val.id}`, user);
 
 			getUser();
 			toggleModal();
