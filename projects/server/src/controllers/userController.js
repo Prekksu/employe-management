@@ -46,6 +46,16 @@ const userController = {
 					"position_id",
 					"company_id",
 				],
+				include: [
+					{
+						model: db.positions,
+						attributes: ["id", "position"],
+					},
+					{
+						model: db.companies,
+						attributes: ["id", "company_name"],
+					},
+				],
 				where: {
 					id: req.params.id,
 				},
@@ -68,6 +78,7 @@ const userController = {
 				company_id,
 				position_id,
 			} = req.body;
+			const { filename } = req.file;
 
 			const existingUser = await db.users.findOne({
 				where: {
@@ -91,6 +102,7 @@ const userController = {
 				role,
 				company_id,
 				position_id,
+				avatar_url: "userImg/" + filename,
 			});
 
 			return res.status(201).json({ message: "User has been created" });
@@ -213,28 +225,6 @@ const userController = {
 			return res.send({ message: "Avatar Updated" });
 		} catch (err) {
 			return res.status(500).send({ message: err.message });
-		}
-	},
-	assignPosition: async (req, res) => {
-		const { position_id, id } = req.body;
-		try {
-			await db.users.update({ position_id }, { where: { id } });
-			return res.send({ message: "Position assignment successful." });
-		} catch (error) {
-			return res.status(500).send({
-				message: error.message,
-			});
-		}
-	},
-	assignCompany: async (req, res) => {
-		const { company_id, id } = req.body;
-		try {
-			await db.users.update({ company_id }, { where: { id } });
-			return res.send({ message: "Company assignment successful." });
-		} catch (error) {
-			return res.status(500).send({
-				message: error.message,
-			});
 		}
 	},
 };

@@ -64,13 +64,13 @@ const UserList = ({ val, getUser }) => {
 
 			<div>
 				<ul className="uk-list">
-					<li>{val?.company.company_name}</li>
+					<li>{val?.company?.company_name}</li>
 				</ul>
 			</div>
 
 			<div>
 				<ul className="uk-list">
-					<li>{val.position.position}</li>
+					<li>{val?.position?.position}</li>
 				</ul>
 			</div>
 			<div>

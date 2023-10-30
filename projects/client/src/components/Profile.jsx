@@ -12,6 +12,7 @@ const Profile = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [users, setUsers] = useState("");
 	const [isDirty, setIsDirty] = useState(false);
+	console.log(users);
 
 	useEffect(() => {
 		fetchData();
@@ -104,6 +105,9 @@ const Profile = () => {
 					<h3 className="uk-card-title uk-margin-remove-top">
 						{users?.fullname}
 					</h3>
+					<p className="uk-card-title uk-margin-remove-top">
+						{`${users?.company?.company_name} - ${users?.position?.position}`}
+					</p>
 				</div>
 				<div className="uk-card-body">
 					<div>

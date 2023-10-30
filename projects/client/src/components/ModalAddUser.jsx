@@ -12,6 +12,7 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 		role: "",
 		company_id: "",
 		position_id: "",
+		avatar_url: null,
 	});
 	const [company, setCompany] = useState([]);
 	const [position, setPosition] = useState([]);
@@ -24,7 +25,17 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 	const addUser = async (event) => {
 		event.preventDefault();
 		try {
-			await api().post("/user", userData);
+			const formData = new FormData();
+			formData.append("fullname", userData.fullname);
+			formData.append("email", userData.email);
+			formData.append("phone_number", userData.phone_number);
+			formData.append("password", userData.password);
+			formData.append("role", userData.role);
+			formData.append("company_id", userData.company_id);
+			formData.append("position_id", userData.position_id);
+			formData.append("userImg", userData.avatar_url);
+
+			await api().post("/user", formData);
 			UIkit.notification({
 				message: "User added successfully!",
 				status: "success",
@@ -49,10 +60,13 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 	}
 
 	const handleInputChange = (event) => {
-		const { id, value } = event.target;
-		setUserData({ ...userData, [id]: value });
+		const { id, value, files } = event.target;
+		if (id === "avatar_url") {
+			setUserData({ ...userData, avatar_url: files[0] }); // Set the avatar file to the state
+		} else {
+			setUserData({ ...userData, [id]: value });
+		}
 	};
-
 	return (
 		isOpen && (
 			<div className="modal">
@@ -60,6 +74,16 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 				<div className="modal-content">
 					<h2>Add User</h2>
 					<form onSubmit={addUser}>
+						<div className="uk-margin">
+							<label className="uk-form-label">Photo:</label>
+							<input
+								className="uk-input"
+								type="file"
+								id="avatar_url"
+								onChange={handleInputChange}
+								accept="image/*" // Allow only image files to be selected
+							/>
+						</div>
 						<div className="uk-margin">
 							<label className="uk-form-label">Fullname:</label>
 							<input

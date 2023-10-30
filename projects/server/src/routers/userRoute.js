@@ -6,7 +6,11 @@ const checkRole = require("../middlewares/roleDecoder");
 
 router.get("/", userController.getAll);
 router.get("/:id", userController.getUsersById);
-router.post("/", userController.createUser);
+router.post(
+	"/",
+	fileUploader({ destinationFolder: "userImg" }).single("userImg"),
+	userController.createUser
+);
 router.patch("/:id", userController.editUser);
 router.patch("/admin/:id", userController.adminEditUser);
 router.delete("/:id", userController.deleteUser);
@@ -15,17 +19,6 @@ router.post(
 	"/:id",
 	fileUploader({ destinationFolder: "userImg" }).single("userImg"),
 	userController.insertImage
-);
-
-router.post(
-	"/assign-position",
-	checkRole.checkUser,
-	userController.assignPosition
-);
-router.post(
-	"/assign-company",
-	checkRole.checkUser,
-	userController.assignCompany
 );
 
 module.exports = router;
