@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers").authController;
+const checkRole = require("../middlewares/roleDecoder");
 
 router.post("/", authController.register);
 router.post("/login", authController.login);
@@ -14,6 +15,7 @@ router.patch(
 );
 router.patch(
 	"/change-password",
+	checkRole.check,
 	authController.getToken,
 	authController.changePassword
 );

@@ -29,7 +29,11 @@ const checkRole = {
 					id: JSON.parse(findToken?.dataValues?.userId).id,
 				},
 			});
-			if (!user.role) {
+			if (
+				user.role != "S_ADMIN" &&
+				user.role != "HR_ADMIN" &&
+				user.role != "EMPLOYE"
+			) {
 				return res.status(401).send({
 					message: "You do not have permissions to access",
 				});
@@ -67,7 +71,7 @@ const checkRole = {
 					id: JSON.parse(findToken?.dataValues?.userId).id,
 				},
 			});
-			if (user.role == "EMPLOYE") {
+			if (user.role !== "S_ADMIN" && user.role !== "HR_ADMIN") {
 				return res.status(401).send({
 					message: "You do not have permissions to access",
 				});

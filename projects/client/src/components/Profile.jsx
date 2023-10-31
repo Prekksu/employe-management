@@ -67,7 +67,10 @@ const Profile = () => {
 			fetchData();
 			UIkit.notification({ message: "Profile Saved", status: "success" });
 		} catch (error) {
-			fetchData();
+			UIkit.notification({
+				message: error.response.data.message,
+				status: "danger",
+			});
 		}
 	};
 

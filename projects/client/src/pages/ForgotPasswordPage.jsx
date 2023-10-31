@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import UIkit from "uikit";
 
 const ForgotPasswordPage = () => {
 	const nav = useNavigate();
@@ -11,10 +12,17 @@ const ForgotPasswordPage = () => {
 	const resetPassword = async () => {
 		try {
 			await api().post(`/auth/reset-password`, { email: userEmail });
-			alert("Please check your email");
+			UIkit.notification({
+				message: "Please check your email",
+				status: "success",
+			});
+
 			nav("/login");
 		} catch (error) {
-			console.log(error.response.data);
+			UIkit.notification({
+				message: error.response.data,
+				status: "success",
+			});
 		}
 	};
 

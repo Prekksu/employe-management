@@ -156,6 +156,7 @@ const userController = {
 	editUser: async (req, res) => {
 		try {
 			const { fullname, email, phone_number } = req.body;
+			const { id } = req.params;
 
 			const existingUser = await db.users.findOne({
 				where: {
@@ -165,7 +166,7 @@ const userController = {
 					],
 				},
 			});
-
+			console.log("masuk");
 			if (existingUser) {
 				return res.status(400).send({
 					message: "User with this email or phone number already exists.",

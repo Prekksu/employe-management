@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../api/api";
+import UIkit from "uikit";
 
 const ResetPasswordPage = () => {
 	const [token, setToken] = useState("");
@@ -31,10 +32,16 @@ const ResetPasswordPage = () => {
 					},
 				}
 			);
-
+			UIkit.notification({
+				message: "Password Changed",
+				status: "success",
+			});
 			nav("/login");
 		} catch (error) {
-			console.error(error);
+			UIkit.notification({
+				message: error.response.data,
+				status: "success",
+			});
 		}
 	};
 

@@ -23,7 +23,10 @@ const RegisterPage = () => {
 			nav("/login");
 			UIkit.notification({ message: "Register success", status: "success" });
 		} catch (error) {
-			alert(error.response.data.message);
+			UIkit.notification({
+				message: error.response.data.message,
+				status: "danger",
+			});
 		}
 	}
 
