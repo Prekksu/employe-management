@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import UIkit from "uikit";
 
-const ModalEditUSer = ({ isOpen, toggleModal, val, getUser }) => {
+const ModalEditUSer = ({ isOpen, toggleModal, val, getUser, admin }) => {
 	const [user, setUser] = useState(val);
 	const [position, setPosition] = useState([]);
 	const [company, setCompany] = useState([]);
-	console.log(user);
 
 	useEffect(() => {
 		setUser(val);
@@ -131,7 +130,7 @@ const ModalEditUSer = ({ isOpen, toggleModal, val, getUser }) => {
 							onChange={inputHandler}
 							required
 						>
-							<option>S_ADMIN</option>
+							{admin.role !== "S_ADMIN" ? null : <option>S_ADMIN</option>}
 							<option>HR_ADMIN</option>
 							<option>EMPLOYE</option>
 						</select>

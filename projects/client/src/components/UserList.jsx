@@ -4,7 +4,7 @@ import UIkit from "uikit";
 import ModalDeleteUser from "./ModalDeleteUser";
 import ModalEditUSer from "./ModalEditUSer";
 
-const UserList = ({ val, getUser }) => {
+const UserList = ({ val, getUser, admin }) => {
 	const [editUserModal, setEditUserModal] = useState(false);
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
 
@@ -73,6 +73,11 @@ const UserList = ({ val, getUser }) => {
 				</ul>
 			</div>
 			<div>
+				<ul className="uk-list">
+					<li>{val?.role}</li>
+				</ul>
+			</div>
+			<div>
 				<ul class="uk-subnav uk-subnav-pill" uk-margin>
 					<li>
 						<a href>
@@ -80,15 +85,18 @@ const UserList = ({ val, getUser }) => {
 						</a>
 						<div uk-dropdown="mode: click">
 							<ul class="uk-nav uk-dropdown-nav">
-								<li style={{ marginBottom: "10px" }}>
-									<div
-										style={{ cursor: "pointer" }}
-										onClick={toggleEditUserModal}
-									>
-										Edit
-									</div>
-								</li>
+								{admin?.role !== "S_ADMIN" ? null : (
+									<li style={{ marginBottom: "10px" }}>
+										<div
+											style={{ cursor: "pointer" }}
+											onClick={toggleEditUserModal}
+										>
+											Edit
+										</div>
+									</li>
+								)}
 								<li class="uk-nav-divider"></li>
+
 								<li style={{ marginBottom: "10px" }}>
 									<div
 										style={{ cursor: "pointer" }}
@@ -106,6 +114,7 @@ const UserList = ({ val, getUser }) => {
 					toggleModal={toggleEditUserModal}
 					val={val}
 					getUser={getUser}
+					admin={admin}
 				/>
 				<ModalDeleteUser
 					isOpen={deleteUserModal}

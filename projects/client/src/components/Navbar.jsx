@@ -27,26 +27,34 @@ const Navbar = () => {
 					</div>
 
 					<div className="uk-navbar-right">
-						<ul className="uk-navbar-nav">
-							<li>
-								{user.role}
-								<span uk-navbar-parent-icon="true"></span>
-								<div className="uk-navbar-dropdown">
-									<ul className="uk-nav uk-navbar-dropdown-nav">
-										<li>
-											<a href="/dashboard">Dashboard</a>
-										</li>
-										<li>
-											<a href="/profile">Profile</a>
-										</li>
-										<li className="uk-nav-divider"></li>
-										<li onClick={logout}>
-											<a href="/login">Logout</a>
-										</li>
-									</ul>
-								</div>
-							</li>
-						</ul>
+						{user.role ? (
+							<ul className="uk-navbar-nav">
+								<li>
+									{user.role}
+									<span uk-navbar-parent-icon="true"></span>
+									<div className="uk-navbar-dropdown">
+										<ul className="uk-nav uk-navbar-dropdown-nav">
+											<li>
+												<a href="/dashboard">Dashboard</a>
+											</li>
+											<li>
+												<a href="/profile">Profile</a>
+											</li>
+											<li className="uk-nav-divider"></li>
+											<li onClick={logout}>
+												<a href="/login">Logout</a>
+											</li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						) : (
+							<ul className="uk-navbar-nav">
+								<li className="uk-active">
+									<a href="/login">Login</a>
+								</li>
+							</ul>
+						)}
 					</div>
 				</div>
 			</div>

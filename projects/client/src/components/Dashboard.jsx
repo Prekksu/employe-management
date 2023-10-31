@@ -8,9 +8,10 @@ import ModalCompany from "./ModalCompany";
 import ModalDeletePosition from "./ModalDeletePosition";
 import ModalDeleteCompany from "./ModalDeleteCompany";
 import Pagination from "./Pagination";
-import UIkit from "uikit";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+	const admin = useSelector((state) => state.auth);
 	const inputFileRef = useRef(null);
 	const [user, setUser] = useState([]);
 	const [addUserModal, setAddUserModal] = useState(false);
@@ -212,32 +213,33 @@ const Dashboard = () => {
 								</ul>
 							</div>
 						</li>
-
-						<li>
-							<a href>
-								<span uk-icon="icon:  trash"></span>
-							</a>
-							<div uk-dropdown="mode: click">
-								<ul class="uk-nav uk-dropdown-nav">
-									<li style={{ marginBottom: "10px" }}>
-										<div
-											style={{ cursor: "pointer" }}
-											onClick={toggleDeletePositionModal}
-										>
-											Delete Position
-										</div>
-									</li>
-									<li style={{ marginBottom: "10px" }}>
-										<div
-											style={{ cursor: "pointer" }}
-											onClick={toggleDeleteCompanyModal}
-										>
-											Delete Company
-										</div>
-									</li>
-								</ul>
-							</div>
-						</li>
+						{admin.role !== "S_ADMIN" ? null : (
+							<li>
+								<a href>
+									<span uk-icon="icon:  trash"></span>
+								</a>
+								<div uk-dropdown="mode: click">
+									<ul class="uk-nav uk-dropdown-nav">
+										<li style={{ marginBottom: "10px" }}>
+											<div
+												style={{ cursor: "pointer" }}
+												onClick={toggleDeletePositionModal}
+											>
+												Delete Position
+											</div>
+										</li>
+										<li style={{ marginBottom: "10px" }}>
+											<div
+												style={{ cursor: "pointer" }}
+												onClick={toggleDeleteCompanyModal}
+											>
+												Delete Company
+											</div>
+										</li>
+									</ul>
+								</div>
+							</li>
+						)}
 					</ul>
 				</div>
 			</div>
@@ -305,11 +307,21 @@ const Dashboard = () => {
 					</h4>
 				</div>
 				<div>
+					<h4
+						onClick={() =>
+							handleSortChange("role" + (sort === "roleAsc" ? "Desc" : "Asc"))
+						}
+					>
+						Role
+						{sort === "roleAsc" ? sort === "roleDesc" : null}
+					</h4>
+				</div>
+				<div>
 					<h4>Manage User</h4>
 				</div>
 			</div>
 			{user.map((val) => {
-				return <UserList val={val} getUser={getUser} />;
+				return <UserList val={val} getUser={getUser} admin={admin} />;
 			})}
 			<div className="uk-flex uk-flex-center uk-margin-top">
 				<Pagination

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import UIkit from "uikit";
+import ModalChangePassword from "./ModalChangePassword";
 
 const Profile = () => {
 	const user = useSelector((state) => state.auth);
@@ -12,7 +13,11 @@ const Profile = () => {
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [users, setUsers] = useState("");
 	const [isDirty, setIsDirty] = useState(false);
+	const [changePasswordModal, setChangePasswordModal] = useState(false);
 
+	const toggleChangePasswordModal = () => {
+		setChangePasswordModal(!changePasswordModal);
+	};
 	useEffect(() => {
 		fetchData();
 	}, []);
@@ -144,7 +149,12 @@ const Profile = () => {
 							</div>
 						</form>
 					</div>
-					<a href="/change-password">Change Password</a>
+					<div
+						style={{ cursor: "pointer" }}
+						onClick={toggleChangePasswordModal}
+					>
+						Change Password
+					</div>
 					<button
 						className="uk-button uk-align-center uk-button-primary"
 						type="button"
@@ -155,6 +165,10 @@ const Profile = () => {
 					</button>
 				</div>
 			</div>
+			<ModalChangePassword
+				isOpen={changePasswordModal}
+				toggleModal={toggleChangePasswordModal}
+			/>
 		</div>
 	);
 };

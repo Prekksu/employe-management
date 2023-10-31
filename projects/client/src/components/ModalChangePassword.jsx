@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import UIkit from "uikit";
 
-const ChangePasswordPage = () => {
+const ModalChangePassword = ({ isOpen, toggleModal }) => {
 	const user = useSelector((state) => state.auth);
 	const [password, setPassword] = useState(user.fullname);
 	const [users, setUsers] = useState("");
@@ -37,11 +37,11 @@ const ChangePasswordPage = () => {
 		}
 	};
 	return (
-		<>
-			<Navbar />
-			<div className="uk-flex uk-flex-center uk-flex-middle uk-height-viewport">
-				<div className="uk-card uk-card-default uk-width-1-3@m uk-card-body uk-box-shadow-large">
-					<h3>Change Password</h3>
+		isOpen && (
+			<div className="modal">
+				<div onClick={toggleModal} className="overlay"></div>
+				<div className="modal-content">
+					<h2>Change Password</h2>
 					<div className="uk-margin">
 						<label className="uk-form-label">Old Password:</label>
 						<input
@@ -70,14 +70,12 @@ const ChangePasswordPage = () => {
 						/>
 					</div>
 					<div className="uk-margin uk-text-right">
-						<a href="/profile">
-							<button
-								className="uk-button uk-button-default uk-margin-right uk-modal-close"
-								type="button"
-							>
-								Cancel
-							</button>
-						</a>
+						<button
+							className="uk-button uk-button-default uk-margin-right"
+							onClick={toggleModal}
+						>
+							Cancel
+						</button>
 						<button
 							className="uk-button uk-button-primary"
 							type="submit"
@@ -88,8 +86,8 @@ const ChangePasswordPage = () => {
 					</div>
 				</div>
 			</div>
-		</>
+		)
 	);
 };
 
-export default ChangePasswordPage;
+export default ModalChangePassword;
