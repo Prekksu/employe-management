@@ -7,15 +7,62 @@ import DashboardPage from "../pages/DashboardPage";
 import ProfilePage from "../pages/ProfilePage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
+import RestrictedPage from "../pages/redirect/RestrictedPage";
+import NotFoundPage from "../pages/redirect/NotFoundPage";
 
 const routes = [
 	<Route path="/" element={<Homepage />} />,
-	<Route path="/profile" element={<ProfilePage />} />,
-	<Route path="/dashboard" element={<DashboardPage />} />,
-	<Route path="/register" element={<RegisterPage />} />,
-	<Route path="/login" element={<LoginPage />} />,
-	<Route path="/forgot-password" element={<ForgotPasswordPage />} />,
-	<Route path="/reset-password/:token" element={<ResetPasswordPage />} />,
+	<Route
+		path="/profile"
+		element={
+			<ProtectedPages needLogin={true}>
+				<ProfilePage />
+			</ProtectedPages>
+		}
+	/>,
+	<Route
+		path="/dashboard"
+		element={
+			<ProtectedPages needLogin={true} needLoginAdmin={true}>
+				<DashboardPage />
+			</ProtectedPages>
+		}
+	/>,
+	<Route
+		path="/register"
+		element={
+			<ProtectedPages guestOnly={true}>
+				<RegisterPage />
+			</ProtectedPages>
+		}
+	/>,
+	<Route
+		path="/login"
+		element={
+			<ProtectedPages guestOnly={true}>
+				<LoginPage />
+			</ProtectedPages>
+		}
+	/>,
+	<Route
+		path="/forgot-password"
+		element={
+			<ProtectedPages guestOnly={true}>
+				<ForgotPasswordPage />
+			</ProtectedPages>
+		}
+	/>,
+	<Route
+		path="/reset-password/:token"
+		element={
+			<ProtectedPages guestOnly={true}>
+				<ResetPasswordPage />
+			</ProtectedPages>
+		}
+	/>,
+
+	<Route path="/not-found" element={<NotFoundPage />}></Route>,
+	<Route path="/restricted" element={<RestrictedPage />}></Route>,
 ];
 
 export default routes;
