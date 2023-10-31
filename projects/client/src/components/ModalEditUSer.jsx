@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api/api";
 import UIkit from "uikit";
+import { useSelector } from "react-redux";
 
 const ModalEditUSer = ({ isOpen, toggleModal, val, getUser, admin }) => {
 	const [user, setUser] = useState(val);

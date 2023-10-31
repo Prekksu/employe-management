@@ -9,6 +9,7 @@ import ModalDeletePosition from "./ModalDeletePosition";
 import ModalDeleteCompany from "./ModalDeleteCompany";
 import Pagination from "./Pagination";
 import { useSelector } from "react-redux";
+import GridTitle from "./GridTitle";
 
 const Dashboard = () => {
 	const admin = useSelector((state) => state.auth);
@@ -98,29 +99,25 @@ const Dashboard = () => {
 	};
 
 	return (
-		<div
-			style={{
-				maxWidth: "1400",
-			}}
-		>
-			<div className="uk-flex uk-flex-middle uk-margin-bottom ">
-				<div className="uk-flex uk-flex-middle uk-margin-right uk-search uk-search-default">
+		<div>
+			<div className="uk-flex uk-flex-middle uk-flex-center uk-margin-bottom ">
+				<div className="uk-flex uk-flex-middle uk-search uk-search-default">
 					<input
 						className="uk-search-input uk-search uk-search-default"
 						type="text"
 						placeholder="Search..."
 						ref={inputFileRef}
 					/>
-					<div
-						uk-icon="icon:  search"
-						onClick={() => {
-							setPage(1);
-							setSearch(inputFileRef.current.value);
-						}}
-						style={{ cursor: "pointer" }}
-					/>
 				</div>
-				<div class="uk-margin" className="uk-margin-right">
+				<div
+					uk-icon="icon:  search "
+					onClick={() => {
+						setPage(1);
+						setSearch(inputFileRef.current.value);
+					}}
+					style={{ cursor: "pointer" }}
+				/>
+				<div class="uk-margin" className="uk-margin-right uk-margin-left">
 					<div uk-form-custom="target: > * > span:first-child">
 						<select
 							aria-label="Custom controls"
@@ -130,7 +127,7 @@ const Dashboard = () => {
 								setSelectedCompany(event.target.value);
 							}}
 						>
-							<option value="">Please company...</option>
+							<option value="">Choose company...</option>
 							{company.length
 								? company.map((val) => (
 										<option key={val.id} value={val.id}>
@@ -159,7 +156,7 @@ const Dashboard = () => {
 								setSelectedPosition(event.target.value);
 							}}
 						>
-							<option value="">Please position...</option>
+							<option value="">Choose position...</option>
 							{position.length
 								? position.map((val) => (
 										<option key={val.id} value={val.id}>
@@ -169,7 +166,7 @@ const Dashboard = () => {
 								: null}
 						</select>
 						<button
-							class="uk-button uk-button-default"
+							class="uk-button uk-button-default "
 							type="button"
 							tabindex="-1"
 						>
@@ -194,22 +191,26 @@ const Dashboard = () => {
 											Add User
 										</div>
 									</li>
-									<li style={{ marginBottom: "10px" }}>
-										<div
-											style={{ cursor: "pointer" }}
-											onClick={togglePositionModal}
-										>
-											Add / Edit Position
-										</div>
-									</li>
-									<li style={{ marginBottom: "10px" }}>
-										<div
-											style={{ cursor: "pointer" }}
-											onClick={toggleCompanyModal}
-										>
-											Add / Edit Company
-										</div>
-									</li>
+									{admin.role !== "S_ADMIN" ? null : (
+										<>
+											<li style={{ marginBottom: "10px" }}>
+												<div
+													style={{ cursor: "pointer" }}
+													onClick={togglePositionModal}
+												>
+													Add / Edit Position
+												</div>
+											</li>
+											<li style={{ marginBottom: "10px" }}>
+												<div
+													style={{ cursor: "pointer" }}
+													onClick={toggleCompanyModal}
+												>
+													Add / Edit Company
+												</div>
+											</li>
+										</>
+									)}
 								</ul>
 							</div>
 						</li>
@@ -243,83 +244,7 @@ const Dashboard = () => {
 					</ul>
 				</div>
 			</div>
-			<div className="uk-child-width-expand@s" uk-grid="true">
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange(
-								"fullname" + (sort === "fullnameAsc" ? "Desc" : "Asc")
-							)
-						}
-					>
-						Fullname
-						{sort === "fullnameAsc" ? sort === "fullnameDesc" : null}
-					</h4>
-				</div>
-
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange("email" + (sort === "emailAsc" ? "Desc" : "Asc"))
-						}
-					>
-						Email
-						{sort === "emailAsc" ? sort === "emailDesc" : null}
-					</h4>
-				</div>
-
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange(
-								"phone_number" + (sort === "phone_numberAsc" ? "Desc" : "Asc")
-							)
-						}
-					>
-						Phone Number
-						{sort === "phone_numberAsc" ? sort === "phone_numberDesc" : null}
-					</h4>
-				</div>
-
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange(
-								"company" + (sort === "companyAsc" ? "Desc" : "Asc")
-							)
-						}
-					>
-						Company
-						{sort === "companyAsc" ? sort === "companyDesc" : null}
-					</h4>
-				</div>
-
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange(
-								"position" + (sort === "positionAsc" ? "Desc" : "Asc")
-							)
-						}
-					>
-						Position
-						{sort === "positionAsc" ? sort === "positionDesc" : null}
-					</h4>
-				</div>
-				<div>
-					<h4
-						onClick={() =>
-							handleSortChange("role" + (sort === "roleAsc" ? "Desc" : "Asc"))
-						}
-					>
-						Role
-						{sort === "roleAsc" ? sort === "roleDesc" : null}
-					</h4>
-				</div>
-				<div>
-					<h4>Manage User</h4>
-				</div>
-			</div>
+			<GridTitle handleSortChange={handleSortChange} sort={sort} />
 			{user.map((val) => {
 				return <UserList val={val} getUser={getUser} admin={admin} />;
 			})}

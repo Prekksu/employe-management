@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../css/Modal.css";
 import { api } from "../api/api";
 import UIkit from "uikit";
+import { useSelector } from "react-redux";
 
 const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
+	const user = useSelector((state) => state.auth);
 	const [userData, setUserData] = useState({
 		fullname: "",
 		email: "",
@@ -119,7 +121,8 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 								<option value="" disabled>
 									Select a role
 								</option>
-								<option>S_ADMIN</option>
+								{user.role !== "S_ADMIN" ? null : <option>S_ADMIN</option>}
+
 								<option>HR_ADMIN</option>
 								<option>EMPLOYE</option>
 							</select>

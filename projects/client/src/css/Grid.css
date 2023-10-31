@@ -1,0 +1,11 @@
+.grid-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+}
+
+.user-list-container div:hover {
+	background-color: #ccc;
+}

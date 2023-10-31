@@ -18,9 +18,6 @@ const Navbar = () => {
 					<div className="uk-navbar-left">
 						<ul className="uk-navbar-nav">
 							<li className="uk-active">
-								<a href="/">Logo</a>
-							</li>
-							<li className="uk-active">
 								<a href="/">Home</a>
 							</li>
 						</ul>
@@ -34,15 +31,18 @@ const Navbar = () => {
 									<span uk-navbar-parent-icon="true"></span>
 									<div className="uk-navbar-dropdown">
 										<ul className="uk-nav uk-navbar-dropdown-nav">
-											<li>
-												<a href="/dashboard">Dashboard</a>
-											</li>
+											{user.role === "EMPLOYE" ? null : (
+												<li>
+													<a href="/dashboard">Dashboard</a>
+												</li>
+											)}
+
 											<li>
 												<a href="/profile">Profile</a>
 											</li>
 											<li className="uk-nav-divider"></li>
 											<li onClick={logout}>
-												<a href="/login">Logout</a>
+												<a href="/">Logout</a>
 											</li>
 										</ul>
 									</div>
