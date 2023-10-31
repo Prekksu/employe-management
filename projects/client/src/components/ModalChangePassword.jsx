@@ -1,62 +1,67 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import UIkit from "uikit";
+import { useLocation } from "react-router-dom";
 
 const ModalChangePassword = ({ isOpen, toggleModal }) => {
-	const user = useSelector((state) => state.auth);
-	const [password, setPassword] = useState(user.fullname);
-	const [users, setUsers] = useState("");
-
-	console.log(users);
+	const [newPassword, setNewPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [token, setToken] = useState("");
 
 	useEffect(() => {
-		fetchData();
+		const storedToken = localStorage.getItem("auth").replace(/"/g, "");
+		if (storedToken) {
+			setToken(storedToken);
+		}
 	}, []);
 
-	const changePassword = async () => {
+	const handleChangePassword = async () => {
 		try {
-			await api().patch(`/user/${users.id}`, {
-				password: password,
+			if (newPassword !== confirmPassword) {
+				UIkit.notification({
+					message: "Passwords do not match!",
+					status: "danger",
+				});
+				return;
+			}
+
+			const response = await api().patch(
+				`/auth/change-password?token=${token}`,
+				{
+					password: newPassword,
+				}
+			);
+
+			UIkit.notification({
+				message: response.data.message,
+				status: response.status === 200 ? "success" : "danger",
 			});
 
-			fetchData();
-			UIkit.notification({ message: "Password Changed", status: "success" });
+			toggleModal();
 		} catch (error) {
-			fetchData();
+			console.error("Error changing password: ", error);
+			UIkit.notification({
+				message: "Failed to change password.",
+				status: "danger",
+			});
 		}
 	};
 
-	const fetchData = async () => {
-		try {
-			const response = await api().get(`/user/${user.id}`);
-			setUsers(response.data);
-		} catch (error) {
-			alert(error);
-		}
-	};
 	return (
 		isOpen && (
 			<div className="modal">
 				<div onClick={toggleModal} className="overlay"></div>
 				<div className="modal-content">
 					<h2>Change Password</h2>
-					<div className="uk-margin">
-						<label className="uk-form-label">Old Password:</label>
-						<input
-							className="uk-input"
-							type="password"
-							id="oldPassword"
-							required
-						/>
-					</div>
+
 					<div className="uk-margin">
 						<label className="uk-form-label">New Password:</label>
 						<input
 							className="uk-input"
 							type="password"
-							id="newPassword"
+							value={newPassword}
+							onChange={(e) => setNewPassword(e.target.value)}
 							required
 						/>
 					</div>
@@ -65,7 +70,8 @@ const ModalChangePassword = ({ isOpen, toggleModal }) => {
 						<input
 							className="uk-input"
 							type="password"
-							id="confirmPassword"
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
 							required
 						/>
 					</div>
@@ -78,8 +84,7 @@ const ModalChangePassword = ({ isOpen, toggleModal }) => {
 						</button>
 						<button
 							className="uk-button uk-button-primary"
-							type="submit"
-							onClick={changePassword}
+							onClick={handleChangePassword}
 						>
 							Change Password
 						</button>

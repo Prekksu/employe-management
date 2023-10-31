@@ -233,6 +233,51 @@ const userController = {
 	getUserByToken: async (req, res) => {
 		res.send(req.user);
 	},
+	changePassword: async (req, res) => {
+		try {
+			const { id } = req.user;
+			const { token } = req.query;
+			const { password } = req.body;
+
+			const existingToken = await db.tokens.findOne({
+				where: {
+					token,
+					expired: {
+						[Op.gt]: moment().format(),
+					},
+					valid: true,
+				},
+			});
+
+			if (!existingToken) {
+				return res.status(400).send({
+					message: "Invalid or expired token.",
+				});
+			}
+
+			const hashPassword = await bcrypt.hash(password, 10);
+
+			await db.users.update({ password: hashPassword }, { where: { id } });
+			await db.tokens.update(
+				{
+					valid: false,
+				},
+				{
+					where: {
+						token,
+					},
+				}
+			);
+
+			return res.send({
+				message: "Password successfully changed.",
+			});
+		} catch (err) {
+			return res.status(500).send({
+				message: err.message,
+			});
+		}
+	},
 };
 
 module.exports = userController;

@@ -65,7 +65,7 @@ const LoginPage = () => {
 								type="text"
 								id="username"
 								placeholder="Enter your email/phone number"
-								value={userData.emailOrPhoneNumber} // Bind input value to state
+								value={userData.emailOrPhoneNumber}
 								onChange={handleEmailOrPhoneNumberChange}
 								required
 							/>

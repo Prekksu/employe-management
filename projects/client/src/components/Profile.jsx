@@ -149,12 +149,9 @@ const Profile = () => {
 							</div>
 						</form>
 					</div>
-					<div
-						style={{ cursor: "pointer" }}
-						onClick={toggleChangePasswordModal}
-					>
+					<a style={{ cursor: "pointer" }} onClick={toggleChangePasswordModal}>
 						Change Password
-					</div>
+					</a>
 					<button
 						className="uk-button uk-align-center uk-button-primary"
 						type="button"

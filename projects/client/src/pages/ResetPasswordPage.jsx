@@ -21,7 +21,7 @@ const ResetPasswordPage = () => {
 		e.preventDefault();
 		try {
 			await api().patch(
-				`/password/verify-password?token=${token}`,
+				`/auth/verify-password?token=${token}`,
 				{
 					password,
 				},

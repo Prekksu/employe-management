@@ -12,5 +12,10 @@ router.patch(
 	authController.getToken,
 	authController.verify
 );
+router.patch(
+	"/change-password",
+	authController.getToken,
+	authController.changePassword
+);
 
 module.exports = router;
