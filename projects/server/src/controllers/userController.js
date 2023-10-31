@@ -6,7 +6,7 @@ const userController = {
 	getAll: async (req, res) => {
 		try {
 			const { sort, search, position_id, company_id } = req.query;
-			const limit = 5;
+			const limit = 3;
 
 			const page = req?.query?.page || 1;
 			let offset = (parseInt(page) - 1) * limit;

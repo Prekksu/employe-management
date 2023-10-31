@@ -64,7 +64,7 @@ const Dashboard = () => {
 				},
 			});
 			setUser(res.data.rows);
-			setTotalPage(Math.ceil(res.data.count / 5));
+			setTotalPage(Math.ceil(res.data.count / 3));
 		} catch (error) {
 			alert(error);
 		}
