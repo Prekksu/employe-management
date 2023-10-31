@@ -64,7 +64,7 @@ const Dashboard = () => {
 				},
 			});
 			setUser(res.data.rows);
-			setTotalPage(Math.ceil(res.data.count / 3));
+			setTotalPage(Math.ceil(res.data.count / 4));
 		} catch (error) {
 			alert(error);
 		}
@@ -245,10 +245,12 @@ const Dashboard = () => {
 				</div>
 			</div>
 			<GridTitle handleSortChange={handleSortChange} sort={sort} />
-			{user.map((val) => {
-				return <UserList val={val} getUser={getUser} admin={admin} />;
-			})}
-			<div className="uk-flex uk-flex-center uk-margin-top">
+			<div style={{ height: "300px" }}>
+				{user.map((val) => {
+					return <UserList val={val} getUser={getUser} admin={admin} />;
+				})}
+			</div>
+			<div className="uk-flex uk-flex-center">
 				<Pagination
 					currentPage={page}
 					totalPage={totalPage}
