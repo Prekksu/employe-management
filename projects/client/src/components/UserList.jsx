@@ -4,6 +4,7 @@ import UIkit from "uikit";
 import ModalDeleteUser from "./modal/ModalDeleteUser";
 import ModalEditUSer from "./modal/ModalEditUSer";
 import "../css/Grid.css";
+import photo from "../assets/blank-profile-picture-973460_960_720.webp";
 
 const UserList = ({ val, getUser, admin }) => {
 	const [editUserModal, setEditUserModal] = useState(false);
@@ -42,7 +43,11 @@ const UserList = ({ val, getUser, admin }) => {
 						<img
 							className="uk-border-circle"
 							style={{ width: "50px", height: "50px" }}
-							src={`${process.env.REACT_APP_API_BASE_URL}/${val?.avatar_url}`}
+							src={
+								val?.avatar_url === null
+									? photo
+									: `${process.env.REACT_APP_API_BASE_URL}/${val?.avatar_url}`
+							}
 							alt="Avatar"
 						/>
 						{"  "}

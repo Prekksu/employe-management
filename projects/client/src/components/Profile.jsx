@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import UIkit from "uikit";
 import ModalChangePassword from "./modal/ModalChangePassword";
+import photo from "../assets/blank-profile-picture-973460_960_720.webp";
 
 const Profile = () => {
 	const user = useSelector((state) => state.auth);
@@ -94,7 +95,11 @@ const Profile = () => {
 					<img
 						className="uk-border-circle uk-align-center"
 						style={{ width: "100px", height: "100px", cursor: "pointer" }}
-						src={`${process.env.REACT_APP_API_BASE_URL}/${users?.avatar_url}`}
+						src={
+							users?.avatar_url === null
+								? photo
+								: `${process.env.REACT_APP_API_BASE_URL}/${users?.avatar_url}`
+						}
 						alt="Avatar"
 						onClick={() => {
 							inputFileRef.current.click();
