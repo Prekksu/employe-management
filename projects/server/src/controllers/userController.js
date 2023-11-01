@@ -194,15 +194,8 @@ const userController = {
 	},
 	adminEditUser: async (req, res) => {
 		const { id } = req.params;
-		const {
-			fullname,
-			email,
-			phone_number,
-			company_id,
-			position_id,
-			role,
-			avatar_url,
-		} = req.body;
+		const { fullname, email, phone_number, company_id, position_id, role } =
+			req.body;
 
 		try {
 			const existingUser = await db.users.findOne({
@@ -228,7 +221,6 @@ const userController = {
 					company_id,
 					position_id,
 					role,
-					avatar_url,
 				},
 				{
 					where: {
