@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { api } from "../api/api";
 import UIkit from "uikit";
-import ModalChangePassword from "./ModalChangePassword";
+import ModalChangePassword from "./modal/ModalChangePassword";
 
 const Profile = () => {
 	const user = useSelector((state) => state.auth);

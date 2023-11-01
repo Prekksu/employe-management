@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "../css/Modal.css";
-import { api } from "../api/api";
+import "../../css/Modal.css";
+import { api } from "../../api/api";
 import UIkit from "uikit";
 
 const ModalCompany = ({ isOpen, toggleModal }) => {

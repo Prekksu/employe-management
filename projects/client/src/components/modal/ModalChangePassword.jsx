@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 import UIkit from "uikit";
 import { useLocation } from "react-router-dom";
 

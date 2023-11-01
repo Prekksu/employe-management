@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from "react";
-import "../css/Modal.css";
-import { api } from "../api/api";
+import "../../css/Modal.css";
+import { api } from "../../api/api";
 import UIkit from "uikit";
 
-const ModalDeletePosition = ({ isOpen, toggleModal }) => {
-	const [position, setPosition] = useState([]);
-	const [selectedPositionId, setSelectedPositionId] = useState("");
+const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
+	const [company, setCompany] = useState([]);
+	const [selectedCompanyId, setSelectedCompanyId] = useState("");
 
 	useEffect(() => {
-		getPosition();
+		getCompany();
 	}, [isOpen]);
 
-	async function getPosition() {
-		const res = await api().get("/position");
-		setPosition(res.data);
+	async function getCompany() {
+		const res = await api().get("/company");
+		setCompany(res.data);
 	}
 
-	async function deletePosition(positionId) {
+	async function deleteCompany(companyId) {
 		try {
-			await api().delete(`/position/${positionId}`);
+			await api().delete(`/company/${companyId}`);
 
-			getPosition();
+			getCompany();
 			toggleModal();
 			UIkit.notification({
-				message: "Position deleted successfully!",
+				message: "Company deleted successfully!",
 				status: "success",
 			});
 		} catch (error) {
@@ -34,8 +34,8 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 		}
 	}
 
-	const handlePositionSelect = (event) => {
-		setSelectedPositionId(event.target.value);
+	const handleCompanySelect = (event) => {
+		setSelectedCompanyId(event.target.value);
 	};
 
 	return (
@@ -43,23 +43,23 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 			<div className="modal">
 				<div onClick={toggleModal} className="overlay"></div>
 				<div className="modal-content">
-					<h3 className="uk-text-center">Delete Position</h3>
+					<h3 className="uk-text-center">Delete Company</h3>
 					<div className="uk-margin">
-						<label className="uk-form-label">Position</label>
+						<label className="uk-form-label">Company</label>
 						<select
 							className="uk-select"
-							id="position"
-							value={selectedPositionId}
-							onChange={handlePositionSelect}
+							id="company_name"
+							value={selectedCompanyId}
+							onChange={handleCompanySelect}
 							required
 						>
 							<option value="" selected>
-								Select a position
+								Select a company
 							</option>
-							{position.length
-								? position.map((val) => (
+							{company.length
+								? company.map((val) => (
 										<option key={val.id} value={val.id}>
-											{val.position}
+											{val.company_name}
 										</option>
 								  ))
 								: null}
@@ -75,7 +75,7 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 						<button
 							className="uk-button uk-button-primary"
 							type="submit"
-							onClick={() => deletePosition(selectedPositionId)}
+							onClick={() => deleteCompany(selectedCompanyId)}
 						>
 							Delete
 						</button>
@@ -86,4 +86,4 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 	);
 };
 
-export default ModalDeletePosition;
+export default ModalDeleteCompany;

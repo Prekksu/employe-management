@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { api } from "../api/api";
 import UIkit from "uikit";
-import ModalDeleteUser from "./ModalDeleteUser";
-import ModalEditUSer from "./ModalEditUSer";
+import ModalDeleteUser from "./modal/ModalDeleteUser";
+import ModalEditUSer from "./modal/ModalEditUSer";
 import "../css/Grid.css";
 
 const UserList = ({ val, getUser, admin }) => {
