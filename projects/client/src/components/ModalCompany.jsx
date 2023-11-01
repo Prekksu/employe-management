@@ -39,6 +39,9 @@ const ModalCompany = ({ isOpen, toggleModal }) => {
 				message: "Company added successfully!",
 				status: "success",
 			});
+			setCompany({
+				company_name: "",
+			});
 		} catch (error) {
 			UIkit.notification({
 				message: error.response.data.message,

@@ -39,6 +39,9 @@ const ModalPosition = ({ isOpen, toggleModal }) => {
 				message: "Position added successfully!",
 				status: "success",
 			});
+			setPosition({
+				position: "",
+			});
 		} catch (error) {
 			UIkit.notification({
 				message: error.response.data.message,
@@ -131,7 +134,7 @@ const ModalPosition = ({ isOpen, toggleModal }) => {
 								onChange={handlePositionSelect}
 								required
 							>
-								<option value="" disabled>
+								<option value="" selected>
 									Select a position
 								</option>
 								{allPosition.length

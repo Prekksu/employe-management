@@ -58,35 +58,39 @@ const UserList = ({ val, getUser, admin }) => {
 					<div>{val?.position?.position}</div>
 					<div>{val?.role}</div>
 					<div>
-						<a href>
-							<span uk-icon="icon: more"></span>
-						</a>
-						<div uk-dropdown="mode: click">
-							<ul class="uk-nav uk-dropdown-nav">
-								<li style={{ marginBottom: "10px" }}>
-									<div
-										style={{ cursor: "pointer" }}
-										onClick={toggleEditUserModal}
-									>
-										Edit
-									</div>
-								</li>
-
-								{admin?.role !== "S_ADMIN" ? null : (
-									<>
-										<li class="uk-nav-divider"></li>
+						{admin.role == "HR_ADMIN" && val.role === "S_ADMIN" ? null : (
+							<>
+								<a href>
+									<span uk-icon="icon: more"></span>
+								</a>
+								<div uk-dropdown="mode: click">
+									<ul class="uk-nav uk-dropdown-nav">
 										<li style={{ marginBottom: "10px" }}>
 											<div
 												style={{ cursor: "pointer" }}
-												onClick={toggleDeleteUserModal}
+												onClick={toggleEditUserModal}
 											>
-												Delete{" "}
+												Edit
 											</div>
 										</li>
-									</>
-								)}
-							</ul>
-						</div>
+
+										{admin?.role !== "S_ADMIN" ? null : (
+											<>
+												<li class="uk-nav-divider"></li>
+												<li style={{ marginBottom: "10px" }}>
+													<div
+														style={{ cursor: "pointer" }}
+														onClick={toggleDeleteUserModal}
+													>
+														Delete{" "}
+													</div>
+												</li>
+											</>
+										)}
+									</ul>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			</div>

@@ -42,6 +42,16 @@ const ModalAddUser = ({ isOpen, toggleModal, getUser }) => {
 				message: "User added successfully!",
 				status: "success",
 			});
+			setUserData({
+				fullname: "",
+				email: "",
+				phone_number: "",
+				password: "",
+				role: "",
+				company_id: "",
+				position_id: "",
+				avatar_url: null,
+			});
 			getUser();
 			toggleModal();
 		} catch (error) {
