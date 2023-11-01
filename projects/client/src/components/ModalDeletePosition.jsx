@@ -53,7 +53,7 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 							onChange={handlePositionSelect}
 							required
 						>
-							<option value="" disabled>
+							<option value="" selected>
 								Select a position
 							</option>
 							{position.length

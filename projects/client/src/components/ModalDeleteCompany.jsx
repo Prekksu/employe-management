@@ -53,7 +53,7 @@ const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
 							onChange={handleCompanySelect}
 							required
 						>
-							<option value="" disabled>
+							<option value="" selected>
 								Select a company
 							</option>
 							{company.length
