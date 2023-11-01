@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import photo from "../assets/blank-profile-picture-973460_960_720.webp";
 
 const Navbar = () => {
 	const user = useSelector((state) => state.auth);
@@ -30,8 +31,19 @@ const Navbar = () => {
 						{user.role ? (
 							<ul className="uk-navbar-nav">
 								<li>
-									{user.role}
-									<span uk-navbar-parent-icon="true"></span>
+									{user.fullname}{" "}
+									<span>
+										<img
+											className="uk-border-circle"
+											style={{ width: "50px", height: "50px" }}
+											src={
+												user?.avatar_url === null
+													? photo
+													: `${process.env.REACT_APP_API_BASE_URL}/${user?.avatar_url}`
+											}
+											alt="Avatar"
+										/>
+									</span>
 									<div className="uk-navbar-dropdown">
 										<ul className="uk-nav uk-navbar-dropdown-nav">
 											{user.role === "EMPLOYE" ? null : (

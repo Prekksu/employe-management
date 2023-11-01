@@ -14,19 +14,18 @@
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
 		"axios": "^1.6.0",
-        "formik": "^2.4.3",
-
+		"formik": "^2.4.3",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-modal": "^3.16.1",
 		"react-redux": "^8.0.7",
 		"react-router-dom": "^6.16.0",
 		"react-scripts": "5.0.1",
-		"uikit": "^3.17.6",
 		"redux": "^4.2.1",
 		"redux-thunk": "^2.4.2",
+		"uikit": "^3.17.6",
 		"web-vitals": "^2.1.4",
-        "yup": "^1.2.0"
-
+		"yup": "^1.2.0"
 	},
 	"eslintConfig": {
 		"extends": [

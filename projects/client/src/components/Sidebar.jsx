@@ -20,16 +20,14 @@ const Sidebar = ({
 				<li style={{ cursor: "pointer" }} onClick={toggleAddUserModal}>
 					Add User
 				</li>
-				{admin.role !== "S_ADMIN" ? null : (
-					<>
-						<li style={{ cursor: "pointer" }} onClick={togglePositionModal}>
-							Add / Edit Position
-						</li>
-						<li style={{ cursor: "pointer" }} onClick={toggleCompanyModal}>
-							Add / Edit Company
-						</li>
-					</>
-				)}
+				<>
+					<li style={{ cursor: "pointer" }} onClick={togglePositionModal}>
+						Add / Edit Position
+					</li>
+					<li style={{ cursor: "pointer" }} onClick={toggleCompanyModal}>
+						Add / Edit Company
+					</li>
+				</>
 			</ul>
 			{admin.role !== "S_ADMIN" ? null : (
 				<>

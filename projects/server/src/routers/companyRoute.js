@@ -5,8 +5,8 @@ const checkRole = require("../middlewares/roleDecoder");
 
 router.get("/", checkRole.check, companyController.getAll);
 router.get("/:id", checkRole.check, companyController.getCompanyById);
-router.post("/", checkRole.checkAdmin, companyController.createCompany);
-router.patch("/:id", checkRole.checkAdmin, companyController.editCompany);
+router.post("/", checkRole.checkUser, companyController.createCompany);
+router.patch("/:id", checkRole.checkUser, companyController.editCompany);
 router.delete("/:id", checkRole.checkAdmin, companyController.deleteCompany);
 
 module.exports = router;
