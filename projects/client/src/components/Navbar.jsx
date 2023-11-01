@@ -12,7 +12,10 @@ const Navbar = () => {
 		});
 	}
 	return (
-		<nav className="uk-navbar-container">
+		<nav
+			className="uk-navbar-container "
+			style={{ backgroundColor: "#f1f1f1" }}
+		>
 			<div className="uk-container">
 				<div uk-navbar="true">
 					<div className="uk-navbar-left">
