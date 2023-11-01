@@ -73,7 +73,7 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 							Cancel
 						</button>
 						<button
-							className="uk-button uk-button-primary"
+							className="uk-button uk-button-danger"
 							type="submit"
 							onClick={() => deletePosition(selectedPositionId)}
 						>

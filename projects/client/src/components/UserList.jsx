@@ -65,35 +65,22 @@ const UserList = ({ val, getUser, admin }) => {
 					<div>
 						{admin.role == "HR_ADMIN" && val.role === "S_ADMIN" ? null : (
 							<>
-								<a href>
-									<span uk-icon="icon: more"></span>
-								</a>
-								<div uk-dropdown="mode: click">
-									<ul class="uk-nav uk-dropdown-nav">
-										<li style={{ marginBottom: "10px" }}>
-											<div
-												style={{ cursor: "pointer" }}
-												onClick={toggleEditUserModal}
-											>
-												Edit
-											</div>
-										</li>
+								<button
+									class="uk-button uk-button-primary uk-button-small"
+									onClick={toggleEditUserModal}
+									style={{ marginRight: "5px" }}
+								>
+									Edit
+								</button>
 
-										{admin?.role !== "S_ADMIN" ? null : (
-											<>
-												<li class="uk-nav-divider"></li>
-												<li style={{ marginBottom: "10px" }}>
-													<div
-														style={{ cursor: "pointer" }}
-														onClick={toggleDeleteUserModal}
-													>
-														Delete{" "}
-													</div>
-												</li>
-											</>
-										)}
-									</ul>
-								</div>
+								{admin?.role !== "S_ADMIN" ? null : (
+									<button
+										class="uk-button uk-button-danger uk-button-small"
+										onClick={toggleDeleteUserModal}
+									>
+										Delete
+									</button>
+								)}
 							</>
 						)}
 					</div>
