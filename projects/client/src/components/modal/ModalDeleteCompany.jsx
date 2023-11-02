@@ -6,9 +6,17 @@ import UIkit from "uikit";
 const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
 	const [company, setCompany] = useState([]);
 	const [selectedCompanyId, setSelectedCompanyId] = useState("");
+	const [confirmationText, setConfirmationText] = useState("");
 
 	useEffect(() => {
 		getCompany();
+	}, [isOpen]);
+
+	useEffect(() => {
+		if (!isOpen) {
+			setSelectedCompanyId("");
+			setConfirmationText("");
+		}
 	}, [isOpen]);
 
 	async function getCompany() {
@@ -38,6 +46,13 @@ const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
 		setSelectedCompanyId(event.target.value);
 	};
 
+	const handleConfirmationTextChange = (event) => {
+		setConfirmationText(event.target.value);
+	};
+
+	const isDeleteButtonEnabled =
+		selectedCompanyId !== "" && confirmationText.trim() === "DELETE";
+
 	return (
 		isOpen && (
 			<div className="modal">
@@ -64,6 +79,17 @@ const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
 								  ))
 								: null}
 						</select>
+						<div className="uk-margin">
+							<label className="uk-form-label">Type "DELETE" to confirm:</label>
+							<input
+								className="uk-input"
+								type="text"
+								value={confirmationText}
+								onChange={handleConfirmationTextChange}
+								placeholder="Type 'DELETE' here"
+								required
+							/>
+						</div>
 					</div>
 					<div className="uk-margin uk-text-center">
 						<button
@@ -75,7 +101,12 @@ const ModalDeleteCompany = ({ isOpen, toggleModal }) => {
 						<button
 							className="uk-button uk-button-danger"
 							type="submit"
-							onClick={() => deleteCompany(selectedCompanyId)}
+							onClick={() => {
+								if (isDeleteButtonEnabled) {
+									deleteCompany(selectedCompanyId);
+								}
+							}}
+							disabled={!isDeleteButtonEnabled}
 						>
 							Delete
 						</button>

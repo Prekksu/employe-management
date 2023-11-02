@@ -63,7 +63,7 @@ const UserList = ({ val, getUser, admin }) => {
 					<div>{val?.position?.position}</div>
 					<div>{val?.role}</div>
 					<div>
-						{admin.role == "HR_ADMIN" && val.role === "S_ADMIN" ? null : (
+						{admin.role === "HR_ADMIN" && val.role === "S_ADMIN" ? null : (
 							<>
 								<button
 									class="uk-button uk-button-primary uk-button-small"
