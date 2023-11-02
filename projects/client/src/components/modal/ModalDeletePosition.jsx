@@ -6,9 +6,17 @@ import UIkit from "uikit";
 const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 	const [position, setPosition] = useState([]);
 	const [selectedPositionId, setSelectedPositionId] = useState("");
+	const [confirmationText, setConfirmationText] = useState("");
 
 	useEffect(() => {
 		getPosition();
+	}, [isOpen]);
+
+	useEffect(() => {
+		if (!isOpen) {
+			setSelectedPositionId("");
+			setConfirmationText("");
+		}
 	}, [isOpen]);
 
 	async function getPosition() {
@@ -38,6 +46,13 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 		setSelectedPositionId(event.target.value);
 	};
 
+	const handleConfirmationTextChange = (event) => {
+		setConfirmationText(event.target.value);
+	};
+
+	const isDeleteButtonEnabled =
+		setSelectedPositionId !== "" && confirmationText.trim() === "DELETE";
+
 	return (
 		isOpen && (
 			<div className="modal">
@@ -64,6 +79,17 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 								  ))
 								: null}
 						</select>
+						<div className="uk-margin">
+							<label className="uk-form-label">Type "DELETE" to confirm:</label>
+							<input
+								className="uk-input"
+								type="text"
+								value={confirmationText}
+								onChange={handleConfirmationTextChange}
+								placeholder="Type 'DELETE' here"
+								required
+							/>
+						</div>
 					</div>
 					<div className="uk-margin uk-text-center">
 						<button
@@ -73,9 +99,14 @@ const ModalDeletePosition = ({ isOpen, toggleModal }) => {
 							Cancel
 						</button>
 						<button
-							className="uk-button uk-button-primary"
+							className="uk-button uk-button-danger"
 							type="submit"
-							onClick={() => deletePosition(selectedPositionId)}
+							onClick={() => {
+								if (isDeleteButtonEnabled) {
+									deletePosition(selectedPositionId);
+								}
+							}}
+							disabled={!isDeleteButtonEnabled}
 						>
 							Delete
 						</button>
